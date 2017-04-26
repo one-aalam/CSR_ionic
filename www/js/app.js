@@ -58,44 +58,81 @@ angular.module('starter', ['ionic'])
 }])*/
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-    .state('tabs', {
-      url: '/tab',
-      abstract: true,
-      templateUrl: 'templates/tabs.html'
-    })
+    // .state('tabs', {
+    //   url: '/tab',
+    //   abstract: true,
+    //   templateUrl: 'templates/tabs.html'
+    // })
 
-    .state('tabs.home', {
+    // .state('tabs.home', {
+    //   url: '/home',
+    //   views: {
+    //     'list-tab' : {
+    //       templateUrl: 'templates/home.html',
+    //       controller: 'LoginController'
+    //     }
+    //   }
+    // })
+
+    /*.state('tabs.home', {
       url: '/home',
       views: {
-        'list-tab' : {
           templateUrl: 'templates/home.html',
-          controller: 'LoginController'
-        }
-      }
-    })
-
-    .state('tabs.list', {
-      url: '/list',
-      views: {
-        'list-tab' : {
-          templateUrl: 'templates/list.html',
           controller: 'ListController'
-        }
+        
       }
+    })*/
+
+    // .state('tabs.list', {
+    //   url: '/list',
+    //   views: {
+    //     'list-tab' : {
+    //       templateUrl: 'templates/list.html',
+    //       controller: 'ListController'
+    //     }
+    //   }
+    // })
+
+    // .state('tabs.detail', {
+    //   url: '/list/:userId',
+    //   views: {
+    //     'list-tab' : {
+    //       templateUrl: 'templates/detail.html',
+    //       controller: 'ListController'
+    //     }
+    //   }
+    // })
+
+     .state('list', {
+       url: '/list',
+       
+           templateUrl: 'templates/list.html',
+           controller: 'ListController'
+         
+       
+     })
+
+     .state('detail', {
+       url: '/list/:ngoName',
+       
+        
+           templateUrl: 'templates/detail.html',
+           controller: 'ListController'
+         
+       
     })
 
-    .state('tabs.detail', {
-      url: '/list/:userId',
-      views: {
-        'list-tab' : {
-          templateUrl: 'templates/detail.html',
-          controller: 'ListController'
-        }
-      }
+    .state('home', {
+       url: '/home',
+       
+        
+           templateUrl: 'templates/home.html',
+           controller: 'ListController'
+         
+       
     })
 
-
-  $urlRouterProvider.otherwise('/tab/home');
+  $urlRouterProvider.otherwise('/list');
 })
 
 .controller('ListController', ['$scope', '$http', '$state',
@@ -103,7 +140,7 @@ angular.module('starter', ['ionic'])
     $http.get('http://10.202.249.51:8080/charity').success(function(data) {
       $scope.ngo = data.ngo;
       console.log(data);
-      $scope.whichngo=$state.params.userId;
+      $scope.whichngo=$state.params.ngoName;
 
       $scope.doRefresh =function() {
       $http.get('http://10.202.249.51:8080/charity').success(function(data) {
@@ -113,17 +150,14 @@ angular.module('starter', ['ionic'])
       }
 
     });
-}])
+}]);
 
-.controller('LoginController',function($scope, $state, UserService, $ionicLoading) {
+/*.controller('LoginController',function($scope, $state, UserService, $ionicLoading) {
   // This method is executed when the user press the "Sign in with Google" button
   $scope.googleSignIn = function() {
     $ionicLoading.show({
       template: 'Logging in...'
-    });
-
-/*$ionicPlatform.ready(function() {*/
-  
+    });  
 
     window.plugins.googleplus.login(
       {
@@ -132,7 +166,6 @@ angular.module('starter', ['ionic'])
 
       },
       function (user_data) {
-        // For the purpose of this example I will store user data on local storage
         UserService.setUser({
           userID: user_data.userId,
           name: user_data.displayName,
@@ -140,13 +173,7 @@ angular.module('starter', ['ionic'])
           picture: user_data.imageUrl,
           accessToken: user_data.accessToken,
           idToken: user_data.idToken
-          console.log(userId);
-          console.log(name);
-          console.log(email);
-          console.log(picture);
-          console.log(accessToken);
-          console.log(idToken);
-
+          
 
         });
 
@@ -157,11 +184,8 @@ angular.module('starter', ['ionic'])
         $ionicLoading.hide();
       }
     );
-
-/*});*/
-
   };
-})
+})*/
 
 /*.service('UserService', function() {
   // For the purpose of this example I will store user data on ionic local storage but you should save it on a database
@@ -180,10 +204,18 @@ angular.module('starter', ['ionic'])
   };
 });*/
 
-.service('UserService', ['$http', function($http) {
+/*.service('UserService', ['$http','$scope' function($scope, $http) {
   // For the purpose of this example I will store user data on ionic local storage but you should save it on a database
 
   var setUser = function(user_data) {
+    $scope.userId = user_data.userID;
+    $scope.userName = user_data.displayName;
+    $scope.userType = "C";
+    $scope.data ={
+
+    }
+    $http.post('http://10.202.249.51:8080/user')
+
     window.localStorage.starter_google_user = JSON.stringify(user_data);
   };
 
@@ -196,9 +228,9 @@ angular.module('starter', ['ionic'])
     setUser: setUser
   };
 }]);
+*/
 
-
-.controller('ListController', ['$scope', '$http', '$state',
+/*.controller('ListController', ['$scope', '$http', '$state',
     function($scope, $http, $state) {
     $http.get('http://10.202.249.51:8080/charity').success(function(data) {
       $scope.ngo = data.ngo;
@@ -213,4 +245,4 @@ angular.module('starter', ['ionic'])
       }
 
     });
-}])
+}])*/

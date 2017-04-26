@@ -7,7 +7,7 @@
 
   <ion-list >
     <ion-item ng-repeat='item in ngo | filter: query'
-    class="item item-thumbnail-left" href="#/tab/list/{{item.ngoName}}">
+    class="item item-thumbnail-left" href="#/list/{{item.ngoName}}">
       <img ng-src="img/{{item.ngoName}}.jpg"
         alt="{{ item.ngoName }} Photo"></img>
       <h1>{{item.ngoName}}</h1>
