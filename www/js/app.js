@@ -112,12 +112,12 @@ angular.module('starter', ['ionic'])
        
      })
 
-     .state('detail', {
+    .state('detail', {
        url: '/list/:ngoName',
        
         
            templateUrl: 'templates/detail.html',
-           controller: 'ListController'
+           controller: 'DetailController'
          
        
     })
@@ -172,7 +172,8 @@ angular.module('starter', ['ionic'])
     $http.get('http://10.202.249.51:8080/charity').success(function(data) {
       $scope.ngo = data.ngo;
       console.log(data);
-      $scope.whichngo=$state.params.ngoName;
+      /*$scope.whichngo=$state.params.ngoName;
+      console.log($scope.whichngo);*/
 
       $scope.doRefresh =function() {
       $http.get('http://10.202.249.51:8080/charity').success(function(data) {
@@ -182,6 +183,18 @@ angular.module('starter', ['ionic'])
       }
 
     });
+}])
+
+.controller('DetailController', ['$scope', '$http', '$state',
+    function($scope, $http, $state) {
+
+      $scope.ngoName = $state.params.ngoName;
+      $http.get('http://10.202.249.51:8080/charity/'+ encodeURI($scope.ngoName)).success(function(data) {
+        console.log('api call successful');
+        $scope.charity = data;
+        console.log($scope.charity);
+        
+      });
 }])
 
 

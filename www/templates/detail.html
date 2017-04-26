@@ -7,8 +7,8 @@
   <ion-content>
   
     <ion-list class="list-inset">
-      <ion-item class="item-text-wrap border item-thumbnail"
-        ng-repeat="item in ngo | filter: { ngoName: whichngo }">
+      <!-- <ion-item class="item-text-wrap border item-thumbnail"
+        ng-repeat="item in ngo | filter: {ngoName: whichngo}">
           <h1><pre>    <img ng-src="img/{{item.ngoName}}.jpg"
             alt="{{ item.ngoName }} Photo"></pre></h1><h1><pre>    <b>{{item.ngoName}}</b></pre></h1>
 
@@ -25,7 +25,35 @@
              <h2><pre> Requirements  :    {{item.category}} : {{item.product}} - {{item.quantity}}</pre></h2>
            </ion-item>
       </ion-item>
+      </ion-item> -->
+
+
+
+<!-- <ion-item class="item-text-wrap border item-thumbnail"
+        ng-repeat="item in charity"> -->
+
+       
+          <h1><pre>    <img ng-src="img/{{charity.ngoName}}.jpg"
+            alt="{{ charity.ngoName }} Photo"></pre></h1><h1><pre>    <b>{{charity.ngoName}}</b></pre></h1>
+
+           <ion-item ng-repeat="item in charity.contact" class="border">
+             <pre>  POC Name      :    <u>{{item.pocFirstName}} {{item.pocLastName}}</u></pre>
+             <pre>  Address       :    <u>{{item.addressLine1}}, {{item.addressLine2}}</u>
+            <pre>                     <u>{{item.city}}-{{item.pincode}}, {{item.state}}, {{item.country}}</u></pre>
+              </pre>
+           </ion-item>
+            <pre>    Details       :   <u>{{charity.detail}}</u></pre>
+           <ion-item ng-repeat="item in charity.charityEvent" class="border"> 
+             <pre>  Cause         :    <u>{{item.cause}}</u></pre>
+             <ion-item ng-repeat="item in item.requirement" class="border">
+             <pre> Requirements  :    {{item.category}} : {{item.product}} - {{item.quantity}}</pre>
+           </ion-item>
+        
       </ion-item>
+      <!-- </ion-item> -->
+
+
+
     </ion-list>
 
   </ion-content>
