@@ -1,0 +1,26 @@
+<ion-view view-title="NGO">
+
+<ion-content 
+  class="has-subheader">
+  <ion-refresher on-refresh="doRefresh()">
+  </ion-refresher>
+
+  <ion-list >
+    <ion-item ng-repeat='item in ngo | filter: query'
+    class="item item-thumbnail-left" href="#/tab/list/{{item.ngoName}}">
+      <img ng-src="img/{{item.ngoName}}.jpg"
+        alt="{{ item.ngoName }} Photo"></img>
+      <h1>{{item.ngoName}}</h1>
+
+      <ion-item ng-repeat="item in item.charityEvent">
+          <h2>{{item.cause}}</h2>
+
+          <ion-item ng-repeat="item in item.requirement">
+            <h3>{{item.category}} : {{item.product}} - {{item.quantity}}</h3>
+
+          </ion-item>
+      </ion-item>
+    </ion-item>
+  </ion-list>
+</ion-content>
+</ion-view>
