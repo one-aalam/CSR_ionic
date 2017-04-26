@@ -122,6 +122,38 @@ angular.module('starter', ['ionic'])
        
     })
 
+
+     .state('seek', {
+       url: '/seek',
+       
+        
+           templateUrl: 'templates/seek.html'
+           
+         
+       
+    })
+
+    .state('raiseRequest', {
+       url: '/raiseRequest',
+       
+        
+           templateUrl: 'templates/raiseRequest.html',
+           controller: 'putserviceCtrl'
+         
+       
+    })
+
+
+     .state('updateRequest', {
+       url: '/updateRequest',
+       
+        
+           templateUrl: 'templates/updateRequest.html',
+           controller: 'GetController'
+         
+       
+    })
+
     .state('home', {
        url: '/home',
        
@@ -150,6 +182,34 @@ angular.module('starter', ['ionic'])
       }
 
     });
+}])
+
+
+.controller('putserviceCtrl',['$scope','$http', function($scope, $http) {
+ $scope.cause = null;
+// $scope.requirement = [];
+ console.log()
+ $scope.putdata = function (cause) {
+  var data = {
+       cause: cause,
+       // requirement: requirement,
+       };
+  $http.post('http://localhost:8080/charity/Cry111/event', data).then(function (response) {
+    if (response.data)
+        $scope.msg = "Put Data Method Executed Successfully!";
+       }); //put
+
+    };
+}])
+
+
+.controller('GetController',['$scope', '$http', function($scope, $http) {
+  $http.get('http://localhost:8080/charity/Cry').success(function(data){
+    console.log(data);
+    $scope.charity = data;
+    $scope.event = data.charityEvent;
+    $scope.requirement = event.requirement;
+  });
 }]);
 
 /*.controller('LoginController',function($scope, $state, UserService, $ionicLoading) {
