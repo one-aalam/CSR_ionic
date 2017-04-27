@@ -1,20 +1,11 @@
-// Ionic Starter App
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
+      
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
       cordova.plugins.Keyboard.disableScroll(true);
     }
     if(window.StatusBar) {
@@ -39,7 +30,7 @@ angular.module('starter', ['ionic'])
             window.plugins.googleplus.isAvailable(
                 function (available) {
                 if (available) {
-                  /*$window.plugins.googleplus.show(true);
+                  $window.plugins.googleplus.show(true);
                     // show the Google+ sign-in button
                     console.log('available')
                   }
@@ -56,53 +47,10 @@ angular.module('starter', ['ionic'])
     }
   });
 }])*/
+
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-    // .state('tabs', {
-    //   url: '/tab',
-    //   abstract: true,
-    //   templateUrl: 'templates/tabs.html'
-    // })
-
-    // .state('tabs.home', {
-    //   url: '/home',
-    //   views: {
-    //     'list-tab' : {
-    //       templateUrl: 'templates/home.html',
-    //       controller: 'LoginController'
-    //     }
-    //   }
-    // })
-
-    /*.state('tabs.home', {
-      url: '/home',
-      views: {
-          templateUrl: 'templates/home.html',
-          controller: 'ListController'
-        
-      }
-    })*/
-
-    // .state('tabs.list', {
-    //   url: '/list',
-    //   views: {
-    //     'list-tab' : {
-    //       templateUrl: 'templates/list.html',
-    //       controller: 'ListController'
-    //     }
-    //   }
-    // })
-
-    // .state('tabs.detail', {
-    //   url: '/list/:userId',
-    //   views: {
-    //     'list-tab' : {
-    //       templateUrl: 'templates/detail.html',
-    //       controller: 'ListController'
-    //     }
-    //   }
-    // })
-
+    
      .state('list', {
        url: '/list',
        
@@ -158,8 +106,7 @@ angular.module('starter', ['ionic'])
        url: '/home',
        
         
-           templateUrl: 'templates/home.html',
-           controller: 'ListController'
+           templateUrl: 'templates/home.html'
          
        
     })
@@ -207,7 +154,7 @@ angular.module('starter', ['ionic'])
        cause: cause,
        // requirement: requirement,
        };
-  $http.post('http://localhost:8080/charity/Cry111/event', data).then(function (response) {
+  $http.post('http://10.202.249.51:8080/charity/Cry111/event', data).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); //put
@@ -217,11 +164,13 @@ angular.module('starter', ['ionic'])
 
 
 .controller('GetController',['$scope', '$http', function($scope, $http) {
-  $http.get('http://localhost:8080/charity/Cry').success(function(data){
+  $http.get('http://10.202.249.51:8080/charity/Cry').success(function(data){
     console.log(data);
     $scope.charity = data;
     $scope.event = data.charityEvent;
     $scope.requirement = event.requirement;
+  
+    console.log(event);
   });
 }]);
 
@@ -302,20 +251,3 @@ angular.module('starter', ['ionic'])
   };
 }]);
 */
-
-/*.controller('ListController', ['$scope', '$http', '$state',
-    function($scope, $http, $state) {
-    $http.get('http://10.202.249.51:8080/charity').success(function(data) {
-      $scope.ngo = data.ngo;
-      console.log(data);
-      $scope.whichngo=$state.params.userId;
-
-      $scope.doRefresh =function() {
-      $http.get('http://10.202.249.51:8080/charity').success(function(data) {
-          $scope.ngo = data.ngo;
-          $scope.$broadcast('scroll.refreshComplete'); 
-        });
-      }
-
-    });
-}])*/
