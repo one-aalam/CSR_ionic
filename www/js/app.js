@@ -260,6 +260,9 @@ angular.module('starter', ['ngCookies', 'ionic'])
                     var user = {};
                     user.name = resp.displayName;
                     user.email = userEmail;
+                    console.log('resp');
+                    console.log(resp);
+
                     if(resp.gender) {
                         resp.gender.toString().toLowerCase() === 'male' ? user.gender = 'M' : user.gender = 'F';
                     } else {
