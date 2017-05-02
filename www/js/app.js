@@ -184,7 +184,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
 
 
 
-.controller('welcomeCtrl', function ($scope, $state, $cookieStore) {
+.controller('welcomeCtrl', function ($scope, $state, $cookieStore,$http) {
 
     /**
      * SOCIAL LOGIN
@@ -212,14 +212,22 @@ angular.module('starter', ['ngCookies', 'ionic'])
                     // Todo
                     // After posting user data to server successfully store user data locally
                     var user = {};
-                    user.name = response.name;
-                    user.email = response.email;
-                    if(response.gender) {
+                    user.userName = response.name;
+                    /*user.email = userEmail;*/
+                    /*user.email = resp.emails;*/
+                    user.userId = response.id;
+                    
+                    /*if(response.gender) {
                         response.gender.toString().toLowerCase() === 'male' ? user.gender = 'M' : user.gender = 'F';
                     } else {
                         user.gender = '';
-                    }
-                    user.profilePic = picResponse.data.url;
+                    }*/
+                   /* user.profilePic = picResponse.data.url;*/
+                   $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                      if (response.data)
+                       $scope.msg = "Api Call successfull";
+                        console.log('Success');
+       }); 
                     $cookieStore.put('userInfo', user);
                     $state.go('dashboard');
 
@@ -258,17 +266,28 @@ angular.module('starter', ['ngCookies', 'ionic'])
 
                     // store data to DB
                     var user = {};
-                    user.name = resp.displayName;
-                    user.email = userEmail;
+                    user.userName = resp.displayName;
+                    /*user.email = userEmail;*/
+                    /*user.email = resp.emails;*/
+                    user.userId = resp.id;
+
                     console.log('resp');
                     console.log(resp);
+                    console.log('user');
+                    console.log(user);
 
-                    if(resp.gender) {
+                    $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                      if (response.data)
+                       $scope.msg = "Api Call successfull";
+                        console.log('Success');
+       }); //put
+
+                   /* if(resp.gender) {
                         resp.gender.toString().toLowerCase() === 'male' ? user.gender = 'M' : user.gender = 'F';
                     } else {
                         user.gender = '';
-                    }
-                    user.profilePic = resp.image.url;
+                    }*/
+                    /*user.profilePic = resp.image.url;*/
                     $cookieStore.put('userInfo', user);
                     $state.go('dashboard');
                 });
