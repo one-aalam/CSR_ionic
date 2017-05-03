@@ -187,10 +187,15 @@ angular.module('starter', ['ngCookies', 'ionic'])
       };
 
 console.log('putserviceCtrl called');        
+<<<<<<< HEAD
  $scope.requirement = [];
  $scope.category = null;
  $scope.product = null;
  $scope.quantity = null;
+=======
+
+// $scope.requirement = [];
+>>>>>>> bd6b81b5d5972835f2dd18e7148e4879147ee463
  console.log()
  $scope.putdata = function (cause, category, product, quantity) {
   var data = {
