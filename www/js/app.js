@@ -187,15 +187,15 @@ angular.module('starter', ['ngCookies', 'ionic'])
       };
 
 console.log('putserviceCtrl called');        
-<<<<<<< HEAD
+
  $scope.requirement = [];
  $scope.category = null;
  $scope.product = null;
  $scope.quantity = null;
-=======
+
 
 // $scope.requirement = [];
->>>>>>> bd6b81b5d5972835f2dd18e7148e4879147ee463
+
  console.log()
  $scope.putdata = function (cause, category, product, quantity) {
   var data = {
@@ -209,7 +209,7 @@ console.log('putserviceCtrl called');
   $http.put('http://10.202.249.51:8080/charity/Cry/event', data).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
-       }); //put
+       }); 
 
     };
 }])
@@ -229,13 +229,8 @@ console.log('putserviceCtrl called');
 
 
 
-.controller('welcomeCtrl', function ($scope, $state, $cookieStore,$http) {
+.controller('welcomeCtrl', function ($rootScope,$scope, $state, $cookieStore,$http) {
 
-    /**
-     * SOCIAL LOGIN
-     * Facebook and Google
-     */
-    // FB Login
     $scope.fbLogin = function () {
         FB.login(function (response) {
             if (response.authResponse) {
@@ -262,19 +257,56 @@ console.log('putserviceCtrl called');
                     /*user.email = resp.emails;*/
                     user.userId = response.id;
                     
-                    /*if(response.gender) {
-                        response.gender.toString().toLowerCase() === 'male' ? user.gender = 'M' : user.gender = 'F';
-                    } else {
-                        user.gender = '';
-                    }*/
                    /* user.profilePic = picResponse.data.url;*/
-                   $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
-                      if (response.data)
-                       $scope.msg = "Api Call successfull";
-                        console.log('Success');
-       }); 
-                    $cookieStore.put('userInfo', user);
-                    $state.go('dashboard');
+                   $http.get('http://10.202.249.51:8080/users').success(function(data) {
+                    if(!data)
+                    {
+                      $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                         if (response.data)
+                            $scope.msg = "Api Call successfull";
+                            console.log('Success---------');
+                          });
+                          $cookieStore.put('userInfo', user);
+                          $state.go('dashboard');
+                    }
+                    else
+                    {
+                      for ( var i = 0; i < data.length; i++)
+                       { 
+                        console.log('inside for');
+                        var obj = data[i]; 
+                        console.log(obj); 
+                        if (obj.userId == user.userId)
+                        {
+                          console.log('inside if');
+                          /*$state.go('list');*/
+                          $cookieStore.put('userInfo', user);
+                          $scope.flag = 1;
+                          break;
+                        }
+                      }
+
+                      if($scope.flag==1 ){
+                        if($rootScope.userType == 'C'){
+                        $state.go('list');
+                        }
+
+                        else if($rootScope.userType == 'N'){
+                          $state.go('seek');
+                        }
+                      }
+                      else{
+                         $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                         if (response.data)
+                           $scope.msg = "Api Call successfull";
+                           console.log('Success');
+                         });
+                         $cookieStore.put('userInfo', user);
+                         $state.go('dashboard');
+                       }
+                    }
+                  
+                    });
 
                 });
             });
@@ -286,7 +318,7 @@ console.log('putserviceCtrl called');
     $scope.gplusLogin = function () {
         var myParams = {
             // Replace client id with yours
-            'clientid': '773655109775-9ao5fku45vguf7itipa62736upntiu33.apps.googleusercontent.com',
+            'clientid': '374010870485-pq83isui0ccj4t1ts0elb8eo200ond3k.apps.googleusercontent.com',
             'cookiepolicy': 'single_host_origin',
             'callback': loginCallback,
             'approvalprompt': 'force',
@@ -321,20 +353,65 @@ console.log('putserviceCtrl called');
                     console.log('user');
                     console.log(user);
 
-                    $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                    $http.get('http://10.202.249.51:8080/users').success(function(data) {
+                    if(!data)
+                    {
+                      $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                         if (response.data)
+                            $scope.msg = "Api Call successfull";
+                            console.log('Success---------');
+                          });
+                          $cookieStore.put('userInfo', user);
+                          $state.go('dashboard');
+                    }
+                    else
+                    {
+                      for ( var i = 0; i < data.length; i++)
+                       { 
+                        console.log('inside for');
+                        var obj = data[i]; 
+                        console.log(obj); 
+                        if (obj.userId == user.userId)
+                        {
+                          console.log('inside if');
+                          /*$state.go('list');*/
+                          $cookieStore.put('userInfo', user);
+                          $scope.flag = 1;
+                          break;
+                        }
+                      }
+
+                       if($scope.flag==1 ){
+                        if($rootScope.userType == 'C'){
+                        $state.go('list');
+                        }
+
+                        else if($rootScope.userType == 'N'){
+                          $state.go('seek');
+                        }
+                      }
+                      else{
+                         $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                         if (response.data)
+                           $scope.msg = "Api Call successfull";
+                           console.log('Success');
+                         });
+                         $cookieStore.put('userInfo', user);
+                         $state.go('dashboard');
+                       }
+                    }
+                  
+                    });
+
+
+                    /*$http.post('http://10.202.249.51:8080/users', user).then(function (response) {
                       if (response.data)
                        $scope.msg = "Api Call successfull";
                         console.log('Success');
-       }); //put
-
-                   /* if(resp.gender) {
-                        resp.gender.toString().toLowerCase() === 'male' ? user.gender = 'M' : user.gender = 'F';
-                    } else {
-                        user.gender = '';
-                    }*/
+       });
+                       
                     /*user.profilePic = resp.image.url;*/
-                    $cookieStore.put('userInfo', user);
-                    $state.go('dashboard');
+
                 });
             }
         }
@@ -352,8 +429,6 @@ console.log('putserviceCtrl called');
     // Logout user
     $scope.logout = function () {
       console.log('In logout');
-
-       // document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:8100"; 
         $cookieStore.remove("userInfo");
         console.log("Hello");
         console.log('userInfo');
@@ -365,8 +440,6 @@ console.log('putserviceCtrl called');
 
     $scope.submit = function () {
       console.log('In submit');
-
-       // document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:8100"; 
         if ($rootScope.userType == 'C') {
             $state.go('list');
         }
@@ -383,32 +456,4 @@ console.log('putserviceCtrl called');
         $window.location.reload();
         
     };
-
-    /*$scope.logout = function() {
-    var hideSheet = $ionicActionSheet.show({
-      destructiveText: 'Logout',
-      titleText: 'Are you sure you want to logout? This app is awsome so I recommend you to stay.',
-      cancelText: 'Cancel',
-      cancel: function() {},
-      buttonClicked: function(index) {
-        return true;
-      },
-      destructiveButtonClicked: function(){
-        $ionicLoading.show({
-          template: 'Logging out...'
-        });
-        //google logout
-        window.plugins.googleplus.logout(
-          function (msg) {
-            console.log(msg);
-            $ionicLoading.hide();
-            $state.go('welcome');
-          },
-          function(fail){
-            console.log(fail);
-          }
-        );
-      }
-    });
-  };*/
 });
