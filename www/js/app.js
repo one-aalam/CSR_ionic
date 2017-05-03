@@ -117,15 +117,40 @@ angular.module('starter', ['ngCookies', 'ionic'])
         controller: "dashboardCtrl"
      })
 
-  $urlRouterProvider.otherwise('/welcome');
+  $urlRouterProvider.otherwise('/home');
 })
+
+
+.controller('CustomerController', ['$scope','$state', '$rootScope',
+  function($scope,$state,$rootScope){
+    $scope.setUserType = function() {
+        $rootScope.userType = 'C';
+        console.log($rootScope.userType);
+        $state.go('welcome');
+      };
+  }
+ ])
+
+.controller('NGOController', ['$scope','$state', '$rootScope',
+  function($scope,$state,$rootScope){
+    $scope.setUserType = function() {
+        $rootScope.userType = 'N';
+        console.log($rootScope.userType);
+        $state.go('welcome');
+      };
+  }
+ ])
 
 .controller('ListController', ['$scope', '$http', '$state',
     function($scope, $http, $state) {
+
+      
+
     $http.get('http://10.202.249.51:8080/charity').success(function(data) {
       $scope.ngo = data;
-      console.log('hello');
+      console.log('List Controller called');
       console.log(data);
+      
       /*$scope.whichngo=$state.params.ngoName;
       console.log($scope.whichngo);*/
 
@@ -137,6 +162,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
       }
 
     });
+  
 }])
 
 .controller('DetailController', ['$scope', '$http', '$state',
@@ -154,6 +180,14 @@ angular.module('starter', ['ngCookies', 'ionic'])
 
 .controller('putserviceCtrl',['$scope','$http', function($scope, $http) {
  $scope.cause = null;
+
+ $scope.setUserType = function(){
+        $scope.userType = 'N';
+        console.log($scope.userType);
+      };
+
+console.log('putserviceCtrl called');        
+
 // $scope.requirement = [];
  console.log()
  $scope.putdata = function (cause) {
@@ -299,7 +333,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
 })
 
 // Dashboard/Profile Controller
-.controller('dashboardCtrl', function ($scope, $window, $state, $cookieStore, $ionicActionSheet,$ionicLoading) {
+.controller('dashboardCtrl', function ($rootScope,$scope, $window, $state, $cookieStore, $ionicActionSheet,$ionicLoading) {
     // Set user details
     $scope.user = $cookieStore.get('userInfo');
 
@@ -313,11 +347,30 @@ angular.module('starter', ['ngCookies', 'ionic'])
         console.log("Hello");
         console.log('userInfo');
         $state.go('welcome');
+        
+        $window.location.reload();
+      
+    };
+
+    $scope.submit = function () {
+      console.log('In submit');
+
+       // document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:8100"; 
+        if ($rootScope.userType == 'C') {
+            $state.go('list');
+        }
+        else{
+           if ($rootScope.userType == 'N'){
+             $state.go('seek');
+           }
+           else{
+            $state.go('welcome');
+           }
+        }
+ 
+        
         $window.location.reload();
         
-
-
-
     };
 
     /*$scope.logout = function() {
