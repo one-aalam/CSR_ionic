@@ -1,4 +1,5 @@
 <ion-view>
+
     <ion-header-bar class="bar-header bar-positive">
         <div class="title uppercase">Welcome</div>
         <button class="button button-clear" ng-click="logout()">Logout</button>
@@ -16,37 +17,42 @@
                         <div id="effect"></div>
                     </div>
                 </div>
-                <div class="profile-background" ng-style="{'background-image': 'url(' + user.profilePic + ')'}"></div>
+                <!-- <div class="profile-background" ng-style="{'background-image': 'url(' + user.profilePic + ')'}"></div> -->
             </div>
             <div class="list">
-                <label class="item item-input field-disabled">
+                <!-- <label class="item item-input field-disabled">
                     <span class="input-label">Email</span>
                     <input ng-model="user.email" type="text" placeholder="user@gmail.com">
-                </label>
+                </label> -->
                 <label class="item item-input">
                     <span class="input-label">Display Name</span>
-                    <input ng-model="user.name" type="text" placeholder="Chanu Sukarno">
+                    <input ng-model="user.userName" type="text" placeholder="Enter your Name">
                 </label>
-                <label class="item item-input">
+                <!-- <label class="item item-input">
                     <span class="input-label">Country</span>
                     <input ng-model="user.country" type="text" placeholder="INDIA">
-                </label>
-                <label class="item item-input">
+                </label> -->
+                <!-- <label class="item item-input">
                     <span class="input-label">Phone</span>
-                    <input ng-model="user.phone" type="text" placeholder="+91 8123595959">
-                </label>
-                <label class="item item-input">
+                    <input ng-model="user.phone" type="text" placeholder="+91 XXXXXXXXXX">
+                </label> -->
+                <!-- <label class="item item-input">
                     <span class="input-label">Birthday</span>
                     <input ng-model="user.dobObj" type="date" placeholder="">
-                </label>
-                <label class="item item-input em-gender">
+                </label> -->
+
+                
+
+               <!--  <label class="item item-input em-gender">
                     <span class="input-label">Gender</span>
                     <ion-checkbox class="em-gender-cb" ng-model="isMale" ng-change="isMale ? user.gender='M' : user.gender = 'F';
                         isFemale = false" ng-checked="user.gender === 'M'">Male</ion-checkbox>
                     <ion-checkbox class="em-gender-cb" ng-model="isFemale" ng-change="isFemale ? user.gender='F' : user.gender = 'M';
                         isMale = false" ng-checked="user.gender === 'F'">Female</ion-checkbox>
-                </label>
+                </label> -->
                 <button class="button button-clear" ng-click="logout()">Logout</button>
+                <br>
+                <button class="button button-clear" ng-click="submit()">Submit</button>
 
             </div>
         </div>
