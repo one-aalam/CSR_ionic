@@ -146,7 +146,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
 
       
 
-    $http.get('http://10.202.249.51:8080/charity').success(function(data) {
+    $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
       $scope.ngo = data;
       console.log('List Controller called');
       console.log(data);
@@ -155,7 +155,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
       console.log($scope.whichngo);*/
 
       $scope.doRefresh =function() {
-      $http.get('http://10.202.249.51:8080/charity').success(function(data) {
+      $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
           $scope.ngo = data.ngo;
           $scope.$broadcast('scroll.refreshComplete'); 
         });
@@ -169,7 +169,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
     function($scope, $http, $state) {
 
       $scope.ngoName = $state.params.ngoName;
-      $http.get('http://10.202.249.51:8080/charity/'+ encodeURI($scope.ngoName)).success(function(data) {
+      $http.get('https://csrsample.herokuapp.com/charity/'+ encodeURI($scope.ngoName)).success(function(data) {
         console.log('api call successful');
         $scope.charity = data;
         console.log($scope.charity);
@@ -206,7 +206,7 @@ console.log('putserviceCtrl called');
             quantity: quantity,
             status: true
        }]};
-  $http.put('http://10.202.249.51:8080/charity/Cry/event', data).then(function (response) {
+  $http.put('https://csrsample.herokuapp.com/Cry/event', data).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
@@ -216,8 +216,17 @@ console.log('putserviceCtrl called');
 
 
 .controller('GetController',['$scope', '$http', function($scope, $http) {
-  $http.get('http://10.202.249.51:8080/charity/Cry').success(function(data){
+  $http.get('https://csrsample.herokuapp.com/charity/Cry').success(function(data){
     console.log(data);
+    $scope.change = function(event,item) {
+    if(item.isChecked){
+      event.preventDefault;
+    }
+    else{
+      return(item.category, item.product, item.quantity);
+    }
+  }
+
     $scope.charity = data;
     $scope.event = data.charityEvent;
     $scope.requirement = event.requirement;
@@ -258,10 +267,10 @@ console.log('putserviceCtrl called');
                     user.userId = response.id;
                     
                    /* user.profilePic = picResponse.data.url;*/
-                   $http.get('http://10.202.249.51:8080/users').success(function(data) {
+                   $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
                     if(!data)
                     {
-                      $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                      $http.post('https://csrsample.herokuapp.com/users', user).then(function (response) {
                          if (response.data)
                             $scope.msg = "Api Call successfull";
                             console.log('Success---------');
@@ -296,7 +305,7 @@ console.log('putserviceCtrl called');
                         }
                       }
                       else{
-                         $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                         $http.post('https://csrsample.herokuapp.com/users', user).then(function (response) {
                          if (response.data)
                            $scope.msg = "Api Call successfull";
                            console.log('Success');
@@ -318,7 +327,7 @@ console.log('putserviceCtrl called');
     $scope.gplusLogin = function () {
         var myParams = {
             // Replace client id with yours
-            'clientid': '374010870485-pq83isui0ccj4t1ts0elb8eo200ond3k.apps.googleusercontent.com',
+            'clientid': '773655109775-9ao5fku45vguf7itipa62736upntiu33.apps.googleusercontent.com',
             'cookiepolicy': 'single_host_origin',
             'callback': loginCallback,
             'approvalprompt': 'force',
@@ -353,10 +362,10 @@ console.log('putserviceCtrl called');
                     console.log('user');
                     console.log(user);
 
-                    $http.get('http://10.202.249.51:8080/users').success(function(data) {
+                    $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
                     if(!data)
                     {
-                      $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                      $http.post('https://csrsample.herokuapp.com/users', user).then(function (response) {
                          if (response.data)
                             $scope.msg = "Api Call successfull";
                             console.log('Success---------');
@@ -391,7 +400,7 @@ console.log('putserviceCtrl called');
                         }
                       }
                       else{
-                         $http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                         $http.post('https://csrsample.herokuapp.com/users', user).then(function (response) {
                          if (response.data)
                            $scope.msg = "Api Call successfull";
                            console.log('Success');
