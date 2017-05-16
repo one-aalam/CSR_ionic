@@ -105,6 +105,15 @@ angular.module('starter', ['ngCookies', 'ionic'])
        
     })
 
+     .state('guest', {
+       url: '/guest',
+       
+        templateUrl: "templates/welcome.html",
+        controller: 'GuestController'
+         
+       
+    })
+
      .state('welcome', {
         url: "/welcome",
         templateUrl: "templates/welcome.html",
@@ -138,6 +147,29 @@ angular.module('starter', ['ngCookies', 'ionic'])
         console.log($rootScope.userType);
         $state.go('welcome');
       };
+  }
+ ])
+
+
+.controller('GuestController', ['$scope','$state', '$rootScope', '$window',
+  function($scope,$state,$rootScope ,$window){
+    console.log('in guest');
+    $scope.callFun = function () {
+      alert("hey");
+      if ($rootScope.userType == 'C') {
+            $state.go('list');
+        }
+        else{
+           if ($rootScope.userType == 'N'){
+            $window.alert('Please log in to continue.');
+            $state.go('welcome');
+           }
+           else{
+            $state.go('welcome');
+        }
+     };
+    }
+    
   }
  ])
 
