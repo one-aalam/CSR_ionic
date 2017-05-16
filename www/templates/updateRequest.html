@@ -12,7 +12,7 @@
           <div ng-if="req.status">
             <h3>{{req.category}} : {{req.product}} - {{req.quantity}}</h3>
               <label class="checkbox">
-                <input type="checkbox" ng-model="itemchecked" ng-change="check($event,item)" ng-click="Update(req.id)"/>
+                <input type="checkbox" ng-model="itemchecked" ng-change="check($event,item)" ng-click="Update(req.reqId)"/>
               </label>
              
           </div>

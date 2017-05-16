@@ -216,7 +216,7 @@ console.log('putserviceCtrl called');
 
 
 .controller('GetController',['$scope', '$http', function($scope, $http) {
-  $http.get('https://csrsample.herokuapp.com/charity/Cry').success(function(data){
+  $http.get('https://csrsample.herokuapp.com/charity/Cheers').success(function(data){
     console.log(data);
   //   $scope.change = function(event,item) {
   //   if(item.isChecked){
@@ -226,10 +226,13 @@ console.log('putserviceCtrl called');
   //     return(item.category, item.product, item.quantity);
   //   }
   // }
-    $scope.Update = function(item){
+    $scope.Update = function(reqId){
+      console.log(reqId);
+      var id = reqId;
+      console.log(id);
       // if(item)
       //   item.status = false;
-       $http.put('https://csrsample.herokuapp.com/charity/Cry/event', item).then(function (response) {
+       $http.put('https://csrsample.herokuapp.com/charity/Cheers/delete/'+ encodeURI(id)).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
