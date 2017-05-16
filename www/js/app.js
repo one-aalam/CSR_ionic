@@ -218,15 +218,22 @@ console.log('putserviceCtrl called');
 .controller('GetController',['$scope', '$http', function($scope, $http) {
   $http.get('https://csrsample.herokuapp.com/charity/Cry').success(function(data){
     console.log(data);
-    $scope.change = function(event,item) {
-    if(item.isChecked){
-      event.preventDefault;
+  //   $scope.change = function(event,item) {
+  //   if(item.isChecked){
+  //     event.preventDefault;
+  //   }
+  //   else{
+  //     return(item.category, item.product, item.quantity);
+  //   }
+  // }
+    $scope.Update = function(item){
+      // if(item)
+      //   item.status = false;
+       $http.put('https://csrsample.herokuapp.com/charity/Cry/event', item).then(function (response) {
+    if (response.data)
+        $scope.msg = "Put Data Method Executed Successfully!";
+       }); 
     }
-    else{
-      return(item.category, item.product, item.quantity);
-    }
-  }
-
     $scope.charity = data;
     $scope.event = data.charityEvent;
     $scope.requirement = event.requirement;

@@ -7,25 +7,28 @@
      <h1>{{item.cause}}</h1>
      
 
-          <div class="ion-item" ng-repeat="item in item.requirement">
+          <div class="ion-item" ng-repeat="req in item.requirement">
 
-          <div ng-if="item.status">
-            <h3>{{item.category}} : {{item.product}} - {{item.quantity}}</h3>
+          <div ng-if="req.status">
+            <h3>{{req.category}} : {{req.product}} - {{req.quantity}}</h3>
               <label class="checkbox">
-                <input type="checkbox" ng-model="item.isChecked" ng-change="check($event,item)" />
+                <input type="checkbox" ng-model="itemchecked" ng-change="check($event,item)" ng-click="Update(req.id)"/>
               </label>
+             
           </div>
-           <div ng-if="!item.status">
-            <h3>{{item.category}} : {{item.product}} - {{item.quantity}}</h3>
+
+           <div ng-if="!req.status">
+            <h3>{{req.category}} : {{req.product}} - {{req.quantity}}</h3>
               <label class="checkbox">
                 <input type="checkbox" checked="true" disabled="true" />
               </label>
           </div>
           </div>
-     
+    
         
      </div>
-
+<!--  <input type="button" value="Send" ng-click="Update(itemchecked)" /> -->
+     
       </ion-content>
 
 </ion-view>
