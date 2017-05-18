@@ -42,6 +42,23 @@ angular.module('starter', ['ngCookies', 'ionic'])
 
 })
 
+.service("UserService", function () {
+  this.userId = "kanishka";
+
+  this.getId = function () {
+    return this.userId;
+  };
+  this.setId = function (id) {
+    this.userId = id;
+    return true;
+  };
+  this.logout = function () {
+    this.userId = "";
+    return true;
+  }
+  return this;
+})
+
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     
@@ -80,7 +97,10 @@ angular.module('starter', ['ngCookies', 'ionic'])
        
         
            templateUrl: 'templates/raiseRequest.html',
-           controller: 'putserviceCtrl'
+           controller: 'putserviceCtrl',
+           resolve: function (UserService) {
+            console.log(UserService.getId());
+           }
          
        
     })
@@ -248,7 +268,20 @@ console.log('putserviceCtrl called');
 
 
 .controller('GetController',['$scope', '$http', function($scope, $http) {
-  $http.get('https://csrsample.herokuapp.com/charity/Cheers').success(function(data){
+  $scope.Update = function(reqId){
+      console.log(reqId);
+      // if(item)
+      //   item.status = false;
+       $http.put('https://csrsample.herokuapp.com/charity/Cheers/delete/'+ encodeURI(reqId)).then(function (response) {
+    if (response.data)
+        $scope.msg = "Put Data Method Executed Successfully!";
+       }); 
+  };
+  $scope.pageData = {
+    charity: "",
+    event: "",
+    requirement: ""
+  };$http.get('https://csrsample.herokuapp.com/charity/Cheers').success(function(data){
     console.log(data);
   //   $scope.change = function(event,item) {
   //   if(item.isChecked){
@@ -258,17 +291,7 @@ console.log('putserviceCtrl called');
   //     return(item.category, item.product, item.quantity);
   //   }
   // }
-    $scope.Update = function(reqId){
-      console.log(reqId);
-      var id = reqId;
-      console.log(id);
-      // if(item)
-      //   item.status = false;
-       $http.put('https://csrsample.herokuapp.com/charity/Cheers/delete/'+ encodeURI(id)).then(function (response) {
-    if (response.data)
-        $scope.msg = "Put Data Method Executed Successfully!";
-       }); 
-    }
+    
     $scope.charity = data;
     $scope.event = data.charityEvent;
     $scope.requirement = event.requirement;
