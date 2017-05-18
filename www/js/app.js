@@ -98,9 +98,9 @@ angular.module('starter', ['ngCookies', 'ionic'])
         
            templateUrl: 'templates/raiseRequest.html',
            controller: 'putserviceCtrl',
-           resolve: function (UserService) {
+           /*resolve: function (UserService) {
             console.log(UserService.getId());
-           }
+           }*/
          
        
     })
@@ -233,7 +233,11 @@ angular.module('starter', ['ngCookies', 'ionic'])
 }])
 
 
-.controller('putserviceCtrl',['$scope','$http', function($scope, $http) {
+.controller('putserviceCtrl',['$scope','$http','$rootScope','$state', function($scope, $http,$rootScope,$state) {
+  console.log($rootScope.userStatus);
+ if($rootScope.userStatus=='A'){
+
+
  $scope.cause = null;
 
  $scope.setUserType = function(){
@@ -253,6 +257,8 @@ console.log('putserviceCtrl called');
 
  console.log()
  $scope.putdata = function (cause, category, product, quantity) {
+  
+ 
   var data = {
        cause: cause,
        requirement: [{
@@ -265,12 +271,20 @@ console.log('putserviceCtrl called');
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
-
+      
+      
     };
+  
+}
+else {
+    
+    $state.go('home');
+  }
+  
 }])
 
 
-.controller('GetController',['$scope', '$http','$rootScope', function($scope, $http,$rootScope) {
+.controller('GetController',['$scope', '$http','$rootScope','$state', function($scope, $http,$rootScope,$state) {
   $scope.Update = function(reqId){
       console.log(reqId);
       // if(item)
@@ -280,6 +294,8 @@ console.log('putserviceCtrl called');
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
   };
+  console.log($rootScope.userStatus);
+  if($rootScope.userStatus=='A'){
   $scope.pageData = {
     charity: "",
     event: "",
@@ -301,6 +317,11 @@ console.log('putserviceCtrl called');
 
     console.log(event);
   });
+}
+else{
+
+  $state.go('home');
+}
 }])
 
 
@@ -334,6 +355,7 @@ console.log('putserviceCtrl called');
                     /*user.email = resp.emails;*/
                     user.userId = response.id;
                     $rootScope.userId = response.id;
+                    $rootScope.userStatus ='A';
                     
                    /* user.profilePic = picResponse.data.url;*/
                    $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
@@ -426,6 +448,7 @@ console.log('putserviceCtrl called');
                     /*user.email = resp.emails;*/
                     user.userId = resp.id;
                     $rootScope.userId = resp.id;
+                    $rootScope.userStatus = 'A';
 
                     console.log('resp');
                     console.log(resp);
@@ -511,6 +534,7 @@ console.log('putserviceCtrl called');
         $cookieStore.remove("userInfo");
         console.log("Hello");
         console.log('userInfo');
+        $rootScope.userStatus = 'T';
         $state.go('welcome');
         
         $window.location.reload();
