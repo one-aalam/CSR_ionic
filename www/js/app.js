@@ -267,10 +267,15 @@ console.log('putserviceCtrl called');
             quantity: quantity,
             status: true
        }]};
-  $http.put('https://csrsample.herokuapp.com/Cry/event', data).then(function (response) {
+   var ngoId = $rootScope.userId;
+        console.log($rootScope.userId);
+        console.log(ngoId);
+  $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(ngoId)+'/event', data).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
+
+  $state.go('seek');
       
       
     };
