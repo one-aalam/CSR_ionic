@@ -32,86 +32,86 @@ angular.module('starter', ['ngCookies', 'ionic'])
     }
  })
 
-    
 
 
- 
+
+
    // Check login session
-    
+
 
 
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-    
+
      .state('list', {
        url: '/list',
-       
+
            templateUrl: 'templates/list.html',
            controller: 'ListController'
-         
-       
+
+
      })
 
     .state('detail', {
        url: '/list/:ngoName',
-       
-        
+
+
            templateUrl: 'templates/detail.html',
            controller: 'DetailController'
-         
-       
+
+
     })
 
 
      .state('seek', {
        url: '/seek',
-       
-        
+
+
            templateUrl: 'templates/seek.html'
-           
-         
-       
+
+
+
     })
 
     .state('raiseRequest', {
        url: '/raiseRequest',
-       
-        
+
+
            templateUrl: 'templates/raiseRequest.html',
            controller: 'putserviceCtrl'
-         
-       
+
+
     })
 
 
      .state('updateRequest', {
        url: '/updateRequest',
-       
-        
+
+
            templateUrl: 'templates/updateRequest.html',
            controller: 'GetController'
-         
-       
+
+
     })
 
     .state('home', {
        url: '/home',
-       
-        
+
+
            templateUrl: 'templates/home.html'
-         
-       
+
+
     })
 
      .state('guest', {
        url: '/guest',
-       
+
         templateUrl: "templates/welcome.html",
         controller: 'GuestController'
-         
-       
+
+
     })
 
      .state('welcome', {
@@ -169,32 +169,32 @@ angular.module('starter', ['ngCookies', 'ionic'])
         }
      };
     }
-    
+
   }
  ])
 
 .controller('ListController', ['$scope', '$http', '$state',
     function($scope, $http, $state) {
 
-      
+
 
     $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
       $scope.ngo = data;
       console.log('List Controller called');
       console.log(data);
-      
+
       /*$scope.whichngo=$state.params.ngoName;
       console.log($scope.whichngo);*/
 
       $scope.doRefresh =function() {
       $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
           $scope.ngo = data.ngo;
-          $scope.$broadcast('scroll.refreshComplete'); 
+          $scope.$broadcast('scroll.refreshComplete');
         });
       }
 
     });
-  
+
 }])
 
 .controller('DetailController', ['$scope', '$http', '$state',
@@ -205,7 +205,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
         console.log('api call successful');
         $scope.charity = data;
         console.log($scope.charity);
-        
+
       });
 }])
 
@@ -218,7 +218,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
         console.log($scope.userType);
       };
 
-console.log('putserviceCtrl called');        
+console.log('putserviceCtrl called');
 
  $scope.requirement = [];
  $scope.category = null;
@@ -241,7 +241,7 @@ console.log('putserviceCtrl called');
   $http.put('https://csrsample.herokuapp.com/Cry/event', data).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
-       }); 
+       });
 
     };
 }])
@@ -267,7 +267,7 @@ console.log('putserviceCtrl called');
        $http.put('https://csrsample.herokuapp.com/charity/Cheers/delete/'+ encodeURI(id)).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
-       }); 
+       });
     }
     $scope.charity = data;
     $scope.event = data.charityEvent;
@@ -307,7 +307,7 @@ console.log('putserviceCtrl called');
                     /*user.email = userEmail;*/
                     /*user.email = resp.emails;*/
                     user.userId = response.id;
-                    
+
                    /* user.profilePic = picResponse.data.url;*/
                    $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
                     if(!data)
@@ -323,10 +323,10 @@ console.log('putserviceCtrl called');
                     else
                     {
                       for ( var i = 0; i < data.length; i++)
-                       { 
+                       {
                         console.log('inside for');
-                        var obj = data[i]; 
-                        console.log(obj); 
+                        var obj = data[i];
+                        console.log(obj);
                         if (obj.userId == user.userId)
                         {
                           console.log('inside if');
@@ -356,7 +356,7 @@ console.log('putserviceCtrl called');
                          $state.go('dashboard');
                        }
                     }
-                  
+
                     });
 
                 });
@@ -369,7 +369,7 @@ console.log('putserviceCtrl called');
     $scope.gplusLogin = function () {
         var myParams = {
             // Replace client id with yours
-            'clientid': '773655109775-9ao5fku45vguf7itipa62736upntiu33.apps.googleusercontent.com',
+            'clientid': '783156363028-82skra7u3fhotbr3uq5ad0pqqkjqjocb.apps.googleusercontent.com',
             'cookiepolicy': 'single_host_origin',
             'callback': loginCallback,
             'approvalprompt': 'force',
@@ -418,10 +418,10 @@ console.log('putserviceCtrl called');
                     else
                     {
                       for ( var i = 0; i < data.length; i++)
-                       { 
+                       {
                         console.log('inside for');
-                        var obj = data[i]; 
-                        console.log(obj); 
+                        var obj = data[i];
+                        console.log(obj);
                         if (obj.userId == user.userId)
                         {
                           console.log('inside if');
@@ -451,7 +451,7 @@ console.log('putserviceCtrl called');
                          $state.go('dashboard');
                        }
                     }
-                  
+
                     });
 
 
@@ -460,7 +460,7 @@ console.log('putserviceCtrl called');
                        $scope.msg = "Api Call successfull";
                         console.log('Success');
        });
-                       
+
                     /*user.profilePic = resp.image.url;*/
 
                 });
@@ -476,7 +476,7 @@ console.log('putserviceCtrl called');
     // Set user details
     $scope.user = $cookieStore.get('userInfo');
 
-    
+
     // Logout user
     $scope.logout = function () {
       console.log('In logout');
@@ -484,9 +484,9 @@ console.log('putserviceCtrl called');
         console.log("Hello");
         console.log('userInfo');
         $state.go('welcome');
-        
+
         $window.location.reload();
-      
+
     };
 
     $scope.submit = function () {
@@ -502,9 +502,9 @@ console.log('putserviceCtrl called');
             $state.go('welcome');
            }
         }
- 
-        
+
+
         $window.location.reload();
-        
+
     };
 });

@@ -2,19 +2,19 @@
 
  <ion-content class="padding" ng-controller="GetController">
 
-      <div class="ion-item"  ng-repeat='item in event' >
-     
-     <h1>{{item.cause}}</h1>
-     
+      <div class="ion-item firstContainer"  ng-repeat='item in event' >
+
+     <h1><span>#{{$index+1}}</span>{{item.cause}}</h1>
+
 
           <div class="ion-item" ng-repeat="req in item.requirement">
 
           <div ng-if="req.status">
-            <h3>{{req.category}} : {{req.product}} - {{req.quantity}}</h3>
+            <h3> * {{req.category}} : {{req.product}} - {{req.quantity}}</h3>
               <label class="checkbox">
                 <input type="checkbox" ng-model="itemchecked" ng-change="check($event,item)" ng-click="Update(req.reqId)"/>
               </label>
-             
+
           </div>
 
            <div ng-if="!req.status">
@@ -24,11 +24,11 @@
               </label>
           </div>
           </div>
-    
-        
+
+
      </div>
 <!--  <input type="button" value="Send" ng-click="Update(itemchecked)" /> -->
-     
+
       </ion-content>
 
 </ion-view>
