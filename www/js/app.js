@@ -193,12 +193,15 @@ angular.module('starter', ['ngCookies', 'ionic'])
   }
  ])
 
-.controller('ListController', ['$scope', '$http', '$state',
-    function($scope, $http, $state) {
+.controller('ListController', ['$scope', '$http', '$state','$rootScope',
+    function($scope, $http, $state,$rootScope) {
 
-      
+      console.log('userId : ');
+      console.log($rootScope.userId);
 
     $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
+      console.log('userId : ');
+      console.log($rootScope.userId);
       $scope.ngo = data;
       console.log('List Controller called');
       console.log(data);
@@ -206,12 +209,12 @@ angular.module('starter', ['ngCookies', 'ionic'])
       /*$scope.whichngo=$state.params.ngoName;
       console.log($scope.whichngo);*/
 
-      $scope.doRefresh =function() {
+      /*$scope.doRefresh =function() {
       $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
           $scope.ngo = data.ngo;
           $scope.$broadcast('scroll.refreshComplete'); 
         });
-      }
+      }*/
 
     });
   
@@ -267,7 +270,7 @@ console.log('putserviceCtrl called');
 }])
 
 
-.controller('GetController',['$scope', '$http', function($scope, $http) {
+.controller('GetController',['$scope', '$http','$rootScope', function($scope, $http,$rootScope) {
   $scope.Update = function(reqId){
       console.log(reqId);
       // if(item)
@@ -330,6 +333,7 @@ console.log('putserviceCtrl called');
                     /*user.email = userEmail;*/
                     /*user.email = resp.emails;*/
                     user.userId = response.id;
+                    $rootScope.userId = response.id;
                     
                    /* user.profilePic = picResponse.data.url;*/
                    $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
@@ -392,7 +396,7 @@ console.log('putserviceCtrl called');
     $scope.gplusLogin = function () {
         var myParams = {
             // Replace client id with yours
-            'clientid': '773655109775-9ao5fku45vguf7itipa62736upntiu33.apps.googleusercontent.com',
+            'clientid': '374010870485-pq83isui0ccj4t1ts0elb8eo200ond3k.apps.googleusercontent.com',
             'cookiepolicy': 'single_host_origin',
             'callback': loginCallback,
             'approvalprompt': 'force',
@@ -421,6 +425,7 @@ console.log('putserviceCtrl called');
                     /*user.email = userEmail;*/
                     /*user.email = resp.emails;*/
                     user.userId = resp.id;
+                    $rootScope.userId = resp.id;
 
                     console.log('resp');
                     console.log(resp);
