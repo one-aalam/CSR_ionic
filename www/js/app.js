@@ -149,6 +149,21 @@ angular.module('starter', ['ngCookies', 'ionic'])
   $urlRouterProvider.otherwise('/home');
 })
 
+.service("UserService", function () {
+
+  this.get = function (key) {
+    return window.localStorage.getItem(key);
+  };
+  this.set = function (key, id) {
+    window.localStorage.setItem(key, id);
+    return true;
+  };
+  this.remove = function (key) {
+    window.localStorage.removeItem(key);
+    return true;
+  }
+  return this;
+}) 
 
 .controller('CustomerController', ['$scope','$state', '$rootScope',
   function($scope,$state,$rootScope){
@@ -233,7 +248,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
 }])
 
 
-.controller('putserviceCtrl',['$scope','$http','$rootScope','$state', function($scope, $http,$rootScope,$state) {
+.controller('putserviceCtrl',['$scope','$http','$rootScope','$state', 'UserService', function($scope, $http,$rootScope,$state,UserService) {
   console.log($rootScope.userStatus);
  if($rootScope.userStatus=='A'){
 
@@ -270,7 +285,8 @@ console.log('putserviceCtrl called');
    var ngoId = $rootScope.userId;
         console.log($rootScope.userId);
         console.log(ngoId);
-  $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(ngoId)+'/event', data).then(function (response) {
+        console.log("userid",UserService.get("userId"));
+  $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))+'/event', data).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
@@ -289,12 +305,13 @@ else {
 }])
 
 
-.controller('GetController',['$scope', '$http','$rootScope','$state', function($scope, $http,$rootScope,$state) {
+.controller('GetController',['$scope', '$http','$rootScope','$state', 'UserService', function($scope, $http,$rootScope,$state,UserService) {
   $scope.Update = function(reqId){
       console.log(reqId);
       // if(item)
       //   item.status = false;
-       $http.put('https://csrsample.herokuapp.com/charity/Cheers/delete/'+ encodeURI(reqId)).then(function (response) {
+      console.log("userid",UserService.get("userId"));
+       $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))+'/delete/'+ encodeURI(reqId)).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
@@ -305,7 +322,7 @@ else {
     charity: "",
     event: "",
     requirement: ""
-  };$http.get('https://csrsample.herokuapp.com/charity/Cheers').success(function(data){
+  };$http.get('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))).success(function(data){
     console.log(data);
   //   $scope.change = function(event,item) {
   //   if(item.isChecked){
@@ -332,7 +349,7 @@ else{
 
 
 
-.controller('welcomeCtrl', function ($rootScope,$scope, $state, $cookieStore,$http) {
+.controller('welcomeCtrl', function ($rootScope,$scope, $state, $cookieStore,$http, UserService) {
 
     $scope.fbLogin = function () {
         FB.login(function (response) {
@@ -455,6 +472,8 @@ else{
                     $rootScope.userId = resp.id;
                     $rootScope.userStatus = 'A';
 
+                     UserService.set("userId", resp.id);
+                    console.log("User", UserService.get("userId"), "Response", resp, "User", user); 
                     console.log('resp');
                     console.log(resp);
                     console.log('user');
