@@ -30,34 +30,25 @@ angular.module('starter', ['ngCookies', 'ionic'])
       StatusBar.styleDefault();
       console.log('in cordova');
     }
- })
-
-    
-
-
- 
-   // Check login session
-    
-
+ })  
 
 })
 
 .service("UserService", function () {
-  this.userId = "kanishka";
 
-  this.getId = function () {
-    return this.userId;
+  this.get = function (key) {
+    return window.localStorage.getItem(key);
   };
-  this.setId = function (id) {
-    this.userId = id;
+  this.set = function (key, id) {
+    window.localStorage.setItem(key, id);
     return true;
   };
-  this.logout = function () {
-    this.userId = "";
+  this.remove = function (key) {
+    window.localStorage.removeItem(key);
     return true;
   }
   return this;
-})
+}) 
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -72,7 +63,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
      })
 
     .state('detail', {
-       url: '/list/:ngoName',
+       url: '/list/:ngoId',
        
         
            templateUrl: 'templates/detail.html',
@@ -99,7 +90,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
            templateUrl: 'templates/raiseRequest.html',
            controller: 'putserviceCtrl',
            /*resolve: function (UserService) {
-            console.log(UserService.getId());
+            console.log(UserService.get());
            }*/
          
        
@@ -150,37 +141,37 @@ angular.module('starter', ['ngCookies', 'ionic'])
 })
 
 
-.controller('CustomerController', ['$scope','$state', '$rootScope',
-  function($scope,$state,$rootScope){
+.controller('CustomerController', ['$scope','$state', '$rootScope','UserService',
+  function($scope,$state,$rootScope,UserService){
     $scope.setUserType = function() {
-        $rootScope.userType = 'C';
-        console.log($rootScope.userType);
+        UserService.set("userType",'C');
+        console.log(UserService.get("userType"));
         $state.go('welcome');
       };
   }
  ])
 
-.controller('NGOController', ['$scope','$state', '$rootScope',
-  function($scope,$state,$rootScope){
+.controller('NGOController', ['$scope','$state', '$rootScope','UserService',
+  function($scope,$state,$rootScope,UserService){
     $scope.setUserType = function() {
-        $rootScope.userType = 'N';
-        console.log($rootScope.userType);
+        UserService.set("userType",'N');
+        console.log(UserService.get("userType"));
         $state.go('welcome');
       };
   }
  ])
 
 
-.controller('GuestController', ['$scope','$state', '$rootScope', '$window',
-  function($scope,$state,$rootScope ,$window){
+.controller('GuestController', ['$scope','$state', '$rootScope', '$window','UserService',
+  function($scope,$state,$rootScope ,$window,UserService){
     console.log('in guest');
     $scope.callFun = function () {
       alert("hey");
-      if ($rootScope.userType == 'C') {
+      if (UserService.get("userType") == 'C') {
             $state.go('list');
         }
         else{
-           if ($rootScope.userType == 'N'){
+           if (UserService.get("userType") == 'N'){
             $window.alert('Please log in to continue.');
             $state.go('welcome');
            }
@@ -193,15 +184,14 @@ angular.module('starter', ['ngCookies', 'ionic'])
   }
  ])
 
-.controller('ListController', ['$scope', '$http', '$state','$rootScope',
-    function($scope, $http, $state,$rootScope) {
+.controller('ListController', ['$scope', '$http', '$state','$rootScope','UserService',
+    function($scope, $http, $state,$rootScope,UserService) {
 
       console.log('userId : ');
-      console.log($rootScope.userId);
+      console.log(UserService.get("userId"));
 
     $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
-      console.log('userId : ');
-      console.log($rootScope.userId);
+      
       $scope.ngo = data;
       console.log('List Controller called');
       console.log(data);
@@ -223,8 +213,8 @@ angular.module('starter', ['ngCookies', 'ionic'])
 .controller('DetailController', ['$scope', '$http', '$state',
     function($scope, $http, $state) {
 
-      $scope.ngoName = $state.params.ngoName;
-      $http.get('https://csrsample.herokuapp.com/charity/'+ encodeURI($scope.ngoName)).success(function(data) {
+      $scope.ngoId = $state.params.ngoId;
+      $http.get('https://csrsample.herokuapp.com/charity/'+ encodeURI($scope.ngoId)).success(function(data) {
         console.log('api call successful');
         $scope.charity = data;
         console.log($scope.charity);
@@ -233,9 +223,9 @@ angular.module('starter', ['ngCookies', 'ionic'])
 }])
 
 
-.controller('putserviceCtrl',['$scope','$http','$rootScope','$state', function($scope, $http,$rootScope,$state) {
-  console.log($rootScope.userStatus);
- if($rootScope.userStatus=='A'){
+.controller('putserviceCtrl',['$scope','$http','$rootScope','$state','UserService', function($scope, $http,$rootScope,$state,UserService) {
+  
+ if(UserService.get("userStatus")=='A'){
 
 
  $scope.cause = null;
@@ -267,10 +257,10 @@ console.log('putserviceCtrl called');
             quantity: quantity,
             status: true
        }]};
-   var ngoId = $rootScope.userId;
-        console.log($rootScope.userId);
-        console.log(ngoId);
-  $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(ngoId)+'/event', data).then(function (response) {
+   var ngoId = UserService.get("userId");
+        console.log(UserService.get("userId"));
+        console.log("NGOId", ngoId);
+  $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))+'/event', data).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
@@ -289,23 +279,23 @@ else {
 }])
 
 
-.controller('GetController',['$scope', '$http','$rootScope','$state', function($scope, $http,$rootScope,$state) {
+.controller('GetController',['$scope', '$http','$rootScope','$state','UserService', function($scope, $http,$rootScope,$state,UserService) {
   $scope.Update = function(reqId){
       console.log(reqId);
       // if(item)
       //   item.status = false;
-       $http.put('https://csrsample.herokuapp.com/charity/Cheers/delete/'+ encodeURI(reqId)).then(function (response) {
+       $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))+'/delete/'+ encodeURI(reqId)).then(function (response) {
     if (response.data)
         $scope.msg = "Put Data Method Executed Successfully!";
        }); 
   };
-  console.log($rootScope.userStatus);
-  if($rootScope.userStatus=='A'){
+  console.log(UserService.get("userSatus"));
+  if(UserService.get("userStatus")=='A'){
   $scope.pageData = {
     charity: "",
     event: "",
     requirement: ""
-  };$http.get('https://csrsample.herokuapp.com/charity/Cheers').success(function(data){
+  };$http.get('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))).success(function(data){
     console.log(data);
   //   $scope.change = function(event,item) {
   //   if(item.isChecked){
@@ -332,7 +322,7 @@ else{
 
 
 
-.controller('welcomeCtrl', function ($rootScope,$scope, $state, $cookieStore,$http) {
+.controller('welcomeCtrl', function ($rootScope,$scope, $state, $cookieStore,$http,UserService) {
 
     $scope.fbLogin = function () {
         FB.login(function (response) {
@@ -351,16 +341,18 @@ else{
                 FB.api('/me/picture?type=normal', function (picResponse) {
                     console.log('Facebook Login RESPONSE: ' + picResponse.data.url);
                     response.imageUrl = picResponse.data.url;
-                    // store data to DB - Call to API
-                    // Todo
-                    // After posting user data to server successfully store user data locally
                     var user = {};
                     user.userName = response.name;
                     /*user.email = userEmail;*/
                     /*user.email = resp.emails;*/
                     user.userId = response.id;
-                    $rootScope.userId = response.id;
-                    $rootScope.userStatus ='A';
+                    user.userStatus = 'A';
+                    UserService.set("userId", response.id);
+                    //$rootScope.userId = resp.id;
+                    UserService.set("userStatus", 'A');
+                    console.log("User", UserService.get("userId"), "Response", resp, "User", user);
+                    /*$rootScope.userId = response.id;
+                    $rootScope.userStatus ='A';*/
                     
                    /* user.profilePic = picResponse.data.url;*/
                    $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
@@ -392,11 +384,11 @@ else{
                       }
 
                       if($scope.flag==1 ){
-                        if($rootScope.userType == 'C'){
+                        if(UserService.get("userType") == 'C'){
                         $state.go('list');
                         }
 
-                        else if($rootScope.userType == 'N'){
+                        else if(UserService.get("userType") == 'N'){
                           $state.go('seek');
                         }
                       }
@@ -452,13 +444,13 @@ else{
                     /*user.email = userEmail;*/
                     /*user.email = resp.emails;*/
                     user.userId = resp.id;
-                    $rootScope.userId = resp.id;
-                    $rootScope.userStatus = 'A';
-
-                    console.log('resp');
-                    console.log(resp);
-                    console.log('user');
-                    console.log(user);
+                    user.userStatus = 'A';
+                    UserService.set("userId", resp.id);
+                    //$rootScope.userId = resp.id;
+                    UserService.set("userStatus", 'A');
+                    console.log("User", UserService.get("userId"), "Response", resp, "User", user);
+                   // $rootScope.userStatus = 'A';
+               
 
                     $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
                     if(!data)
@@ -489,11 +481,11 @@ else{
                       }
 
                        if($scope.flag==1 ){
-                        if($rootScope.userType == 'C'){
+                        if(UserService.get("userType") == 'C'){
                         $state.go('list');
                         }
 
-                        else if($rootScope.userType == 'N'){
+                        else if(UserService.get("userType") == 'N'){
                           $state.go('seek');
                         }
                       }
@@ -528,7 +520,7 @@ else{
 })
 
 // Dashboard/Profile Controller
-.controller('dashboardCtrl', function ($rootScope,$scope, $window, $state, $cookieStore, $ionicActionSheet,$ionicLoading) {
+.controller('dashboardCtrl', function ($rootScope,$scope, $window, $state, $cookieStore, $ionicActionSheet,$ionicLoading,UserService) {
     // Set user details
     $scope.user = $cookieStore.get('userInfo');
 
@@ -539,8 +531,13 @@ else{
         $cookieStore.remove("userInfo");
         console.log("Hello");
         console.log('userInfo');
-        $rootScope.userStatus = 'T';
+        //$rootScope.userStatus = 'T';
+        UserService.set("userStatus", 'T');
         $state.go('welcome');
+        UserService.remove("userStatus");
+        UserService.remove("userId");
+        UserService.remove("userType");
+
         
         $window.location.reload();
       
@@ -548,11 +545,11 @@ else{
 
     $scope.submit = function () {
       console.log('In submit');
-        if ($rootScope.userType == 'C') {
+        if (UserService.get("userType") == 'C') {
             $state.go('list');
         }
         else{
-           if ($rootScope.userType == 'N'){
+           if (UserService.get("userType") == 'N'){
              $state.go('seek');
            }
            else{
