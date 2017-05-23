@@ -181,7 +181,7 @@ angular.module('starter', ['ngCookies', 'ionic'])
   function($scope,$state,$window,UserService){
     console.log('in guest');
     $scope.callFun = function () {
-      alert("hey");
+      
       if (UserService.get("userType") == 'C') {
             $state.go('list');
         }
