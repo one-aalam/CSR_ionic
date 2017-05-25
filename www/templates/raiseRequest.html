@@ -1,0 +1,36 @@
+
+<ion-view view-title="Raise a Request">
+<ion-content class="padding" >
+<div ng-controller="putserviceCtrl">
+ 
+   <label class="item item-input">
+          <span class="input-label">Cause</span>
+          <input type="text" placeholder="Cause" ng-model="cause">
+        </label>
+
+       
+        <label class="item item-input">
+          <span class="input-label">Category</span>
+          <input type="text" placeholder="category" ng-model="category">
+        </label>
+ 
+        <label class="item item-input">
+          <span class="input-label">Product</span>
+          <input type="text" placeholder="product" ng-model="product">
+        </label>
+
+         <label class="item item-input">
+          <span class="input-label">Quantity</span>
+          <input type="text" placeholder="quantity" ng-model="quantity">
+        </label>
+        <input type="button" value="Send" ng-click="putdata(cause, category, product, quantity)" /> <br/><br/>
+
+        <a href="#" ng-controller="dashboardCtrl"> <button class="button" button-large ng-click="logout()">  Logout</button></a>
+</div>
+
+<!-- <div class="item item-body">
+        <button class="button button-positive" ui-sref="page2">Update Request</button>
+      </div> -->
+
+</ion-content> 
+</ion-view>

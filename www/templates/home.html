@@ -1,10 +1,18 @@
-<ion-view hide-nav-bar="true">
+<ion-view hide-nav-bar="true" view-title= "Welcome">
+<ion-header-bar class="bar-header bar-calm">
+        <div class="title uppercase">Welcome</div>
+      
+    </ion-header-bar>
   <ion-content class="splash padding">
     <div class="branding">
-      <div class="tagline">2015 conference</div>
-       <a href="#/list" ng-controller="ListController"><button class="button" button-large>  NGO</button></a>
+      <div class="tagline"></div>
+       
+       <button class="button button-calm" button-large ng-click="setUserType('C')">  Provide Help</button>
+
+       <br>
+
+        <button class="button button-calm" button-large ng-click="setUserType('N')">  Seek Help</button>
+
       </div>
-      <p>Join 500 creative and brilliant minds from art colleges around world.</p>
-        <!-- <a class="google-sign-in button button-block" ng-click="googleSignIn()"> <img ng-src="img/google.jpg"></img></a> -->
   </ion-content>
 </ion-view>

@@ -1,0 +1,42 @@
+<ion-view view-title="Welcome" id="welcome-view">
+    <ion-content>
+        <div  class="logo-welcome"></div>
+        <div class="login-btns">
+            <div id="social-links">
+                <ul>
+                    <li ng-click="fbLogin()"><span class="ifacebook"><img src="img/social-icons/facebook.png"></span><a href="#" class="afacebook">sign in with facebook</a></li>
+                    <li ng-click="gplusLogin()"><span class="igoogleplus"><img src="img/social-icons/googleplus.png"></span><a href="#" class="agoogleplus">sign in with google+</a></li>
+
+                </ul>
+
+            </div>
+            <div>
+                <a ui-sref="home"><button class="button button-calm" button-large>HOME</button></a>
+            </div>
+
+            
+
+            <div>
+                <div ng-if="userType === 'C'">
+                    <button class="button button-calm button-large" ng-click="guestSignin()" ng-disabled="userType === 'N'">Guest Sign In</button>
+                </div>
+
+                <div ng-if="userType === 'N'">
+                    <button class="button button-calm button-large" ng-click="guestSignin()" ng-disabled=true>Guest Sign In</button>
+                </div>
+            </div>
+           
+            <div id="map" style="width: 500px;height: 500px;">
+                <button class="button button-calm button-large" ng-click="geo()">Get Location</button>
+            </div>
+        </div>
+        
+
+    </ion-content>
+
+    <div id="footer" class="bar bar-footer">
+        <div class="title em-footer-title"></div>
+    </div>
+</ion-view>
+
+

@@ -1,248 +1,522 @@
-// Ionic Starter App
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+angular.module('starter', ['ngCookies', 'ionic','ngCordova'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+
+.run(function ($rootScope, $cookieStore, $state, $ionicPlatform,$window) {
+
+     $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
+      console.log('in cordova');
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
       cordova.plugins.Keyboard.disableScroll(true);
+      $rootScope.$on('$stateChangeStart', function (event, next, current) {
+        var userInfo = $cookieStore.get('userInfo');
+        if (!userInfo) {
+            // user not logged in | redirect to login
+            if (next.name !== "welcome") {
+              console.log('in rootScope if');
+                // not going to #welcome, we should redirect now
+                event.preventDefault();
+                $state.go('welcome');
+            }
+        } else if (next.name === "welcome") {
+          console.log('in rootScope else');
+            event.preventDefault();
+            $state.go('dashboard');
+        }
+    })
     }
     if(window.StatusBar) {
       StatusBar.styleDefault();
+      console.log('in cordova');
     }
-  });
+ })  
+
 })
 
-/*.run(["$ionicPlatform", "$window", function($ionicPlatform,$window) {
-  $ionicPlatform.ready(function() {
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+.service("UserService", function () {
 
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if (window.plugins && window.plugins.googleplus) {
-            window.plugins.googleplus.isAvailable(
-                function (available) {
-                if (available) {
-                  /*$window.plugins.googleplus.show(true);
-                    // show the Google+ sign-in button
-                    console.log('available')
-                  }
-                  else{
-                    console.log('not available')
-                }
-            });
-        }
-        else{
-          console.log('window.plugins.googleplus not found')
-        }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
-}])*/
+  this.get = function (key) {
+    return window.localStorage.getItem(key);
+  };
+  this.set = function (key, id) {
+    window.localStorage.setItem(key, id);
+    return true;
+  };
+  this.remove = function (key) {
+    window.localStorage.removeItem(key);
+    return true;
+  }
+  return this;
+}) 
+
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-    // .state('tabs', {
-    //   url: '/tab',
-    //   abstract: true,
-    //   templateUrl: 'templates/tabs.html'
-    // })
-
-    // .state('tabs.home', {
-    //   url: '/home',
-    //   views: {
-    //     'list-tab' : {
-    //       templateUrl: 'templates/home.html',
-    //       controller: 'LoginController'
-    //     }
-    //   }
-    // })
-
-    /*.state('tabs.home', {
-      url: '/home',
-      views: {
-          templateUrl: 'templates/home.html',
-          controller: 'ListController'
-        
-      }
-    })*/
-
-    // .state('tabs.list', {
-    //   url: '/list',
-    //   views: {
-    //     'list-tab' : {
-    //       templateUrl: 'templates/list.html',
-    //       controller: 'ListController'
-    //     }
-    //   }
-    // })
-
-    // .state('tabs.detail', {
-    //   url: '/list/:userId',
-    //   views: {
-    //     'list-tab' : {
-    //       templateUrl: 'templates/detail.html',
-    //       controller: 'ListController'
-    //     }
-    //   }
-    // })
-
+    
      .state('list', {
        url: '/list',
-       
-           templateUrl: 'templates/list.html',
-           controller: 'ListController'
-         
-       
+       templateUrl: 'templates/list.html',
+       controller: 'ListController'       
      })
 
-     .state('detail', {
-       url: '/list/:ngoName',
-       
-        
-           templateUrl: 'templates/detail.html',
-           controller: 'ListController'
-         
-       
+    .state('detail', {
+       url: '/list/:ngoId',      
+       templateUrl: 'templates/detail.html',
+       controller: 'DetailController'       
+    })
+
+     .state('seek', {
+       url: '/seek',       
+       templateUrl: 'templates/seek.html'
+    })
+
+    .state('raiseRequest', {
+       url: '/raiseRequest',    
+       templateUrl: 'templates/raiseRequest.html',
+       controller: 'putserviceCtrl',           
+    })
+
+    .state('updateRequest', {
+       url: '/updateRequest',    
+       templateUrl: 'templates/updateRequest.html',
+       controller: 'GetController'
     })
 
     .state('home', {
-       url: '/home',
-       
-        
-           templateUrl: 'templates/home.html',
-           controller: 'ListController'
-         
-       
+       url: '/home',   
+       templateUrl: 'templates/home.html',
+       controller: 'HomeController' 
     })
+     
+    .state('welcome', {
+        url: "/welcome",
+        templateUrl: "templates/welcome.html",
+        controller: 'WelcomeCtrl',
+        cache: false
+      })
 
-  $urlRouterProvider.otherwise('/list');
+     .state('dashboard', {
+        url: "/dashboard",
+        templateUrl: "templates/dashboard.html",
+        controller: "dashboardCtrl"
+     })
+
+  $urlRouterProvider.otherwise('/home');
 })
 
-.controller('ListController', ['$scope', '$http', '$state',
-    function($scope, $http, $state) {
-    $http.get('http://10.202.249.51:8080/charity').success(function(data) {
-      $scope.ngo = data.ngo;
+.service("UserService", function () {
+
+  this.get = function (key) {
+    return window.localStorage.getItem(key);
+  };
+  this.set = function (key, id) {
+    window.localStorage.setItem(key, id);
+    return true;
+  };
+  this.remove = function (key) {
+    window.localStorage.removeItem(key);
+    return true;
+  }
+  return this;
+}) 
+
+.controller('HomeController', ['$scope','$state','UserService',
+  function($scope,$state,UserService){
+    $scope.setUserType = function(type) {
+        UserService.set("userType", type);
+        console.log(UserService.get("userType"));
+        $state.go('welcome', {
+          "type": type
+        });
+      };
+  }
+ ])
+
+
+/*.controller('ListController', ['$scope', '$http', '$state', '$ionicHistory,'UserService',
+    function($scope, $http, $state,UserService) {
+.goBack()*/
+.controller('ListController', ['$scope', '$http', '$state','UserService',
+    function($scope, $http, $state,UserService) {
+
+      console.log('userId : ');
+      console.log(UserService.get("userId"));
+
+      $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
+      
+      $scope.ngo = data;
+      console.log('List Controller called');
       console.log(data);
-      $scope.whichngo=$state.params.ngoName;
-
-      $scope.doRefresh =function() {
-      $http.get('http://10.202.249.51:8080/charity').success(function(data) {
-          $scope.ngo = data.ngo;
-          $scope.$broadcast('scroll.refreshComplete'); 
-        });
-      }
-
     });
-}]);
+}])
 
-/*.controller('LoginController',function($scope, $state, UserService, $ionicLoading) {
-  // This method is executed when the user press the "Sign in with Google" button
-  $scope.googleSignIn = function() {
-    $ionicLoading.show({
-      template: 'Logging in...'
-    });  
+.controller('DetailController', ['$scope', '$http', '$state',
+    function($scope, $http, $state) {
 
-    window.plugins.googleplus.login(
-      {
-        'webClientId': '374010870485-pq83isui0ccj4t1ts0elb8eo200ond3k.apps.googleusercontent.com',
-        'offline': true
+      $scope.ngoId = $state.params.ngoId;
+      $http.get('https://csrsample.herokuapp.com/charity/'+ encodeURI($scope.ngoId)).success(function(data) {
+      console.log('api call successful');
+      $scope.charity = data;
+      console.log($scope.charity);
+        
+      });
+}])
 
-      },
-      function (user_data) {
-        UserService.setUser({
-          userID: user_data.userId,
-          name: user_data.displayName,
-          email: user_data.email,
-          picture: user_data.imageUrl,
-          accessToken: user_data.accessToken,
-          idToken: user_data.idToken
-          
 
-        });
+.controller('putserviceCtrl',['$scope','$http','$state','UserService', function($scope, $http,$state,UserService) {
+     
+      if(UserService.get("userStatus")=='A'){
+        $scope.cause = null;   
+        console.log('putserviceCtrl called');        
+        $scope.requirement = [];
+        $scope.category = null;
+        $scope.product = null;
+        $scope.quantity = null;
 
-        $ionicLoading.hide();
-        $state.go('tabs.list');
-      },
-      function (msg) {
-        $ionicLoading.hide();
+        $scope.putdata = function (cause, category, product, quantity) { 
+          var data = {
+          cause: cause,
+          requirement: [{
+            reqId: new Date().getTime().toString(),
+            category: category,
+            product: product,
+            quantity: quantity,
+            status: true
+          }]};
+
+          var ngoId = UserService.get("userId");
+          console.log(UserService.get("userId"));
+          console.log("NGOId", ngoId);
+
+          $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))+'/event', data).then(function (response) {
+          if (response.data)
+            $scope.msg = "Put Data Method Executed Successfully!";
+          }); 
+
+          $state.go('seek');
+        };
       }
-    );
-  };
-})*/
-
-/*.service('UserService', function() {
-  // For the purpose of this example I will store user data on ionic local storage but you should save it on a database
-
-  var setUser = function(user_data) {
-    window.localStorage.starter_google_user = JSON.stringify(user_data);
-  };
-
-  var getUser = function(){
-    return JSON.parse(window.localStorage.starter_google_user || '{}');
-  };
-
-  return {
-    getUser: getUser,
-    setUser: setUser
-  };
-});*/
-
-/*.service('UserService', ['$http','$scope' function($scope, $http) {
-  // For the purpose of this example I will store user data on ionic local storage but you should save it on a database
-
-  var setUser = function(user_data) {
-    $scope.userId = user_data.userID;
-    $scope.userName = user_data.displayName;
-    $scope.userType = "C";
-    $scope.data ={
-
+      else {
+        $state.go('home');
     }
-    $http.post('http://10.202.249.51:8080/user')
+  
+}])
 
-    window.localStorage.starter_google_user = JSON.stringify(user_data);
-  };
 
-  var getUser = function(){
-    return JSON.parse(window.localStorage.starter_google_user || '{}');
-  };
+.controller('GetController',['$scope', '$http','$state', 'UserService', function($scope, $http,$state,UserService) {
 
-  return {
-    getUser: getUser,
-    setUser: setUser
-  };
-}]);
-*/
-
-/*.controller('ListController', ['$scope', '$http', '$state',
-    function($scope, $http, $state) {
-    $http.get('http://10.202.249.51:8080/charity').success(function(data) {
-      $scope.ngo = data.ngo;
+    $scope.Update = function(reqId){
+      console.log(reqId);
+      console.log("userid",UserService.get("userId"));
+      $http.put('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))+'/delete/'+ encodeURI(reqId)).then(function (response) {
+      if (response.data)
+          $scope.msg = "Put Data Method Executed Successfully!";
+      }); 
+    };
+    console.log(UserService.get("userSatus"));
+    if(UserService.get("userStatus")=='A'){
+      $scope.pageData = {
+      charity: "",
+      event: "",
+      requirement: ""
+    };$http.get('https://csrsample.herokuapp.com/charity/'+encodeURI(UserService.get("userId"))).success(function(data){
       console.log(data);
-      $scope.whichngo=$state.params.userId;
+ 
+      $scope.charity = data;
+      $scope.event = data.charityEvent;
+      $scope.requirement = $scope.event.requirement;
 
-      $scope.doRefresh =function() {
-      $http.get('http://10.202.249.51:8080/charity').success(function(data) {
-          $scope.ngo = data.ngo;
-          $scope.$broadcast('scroll.refreshComplete'); 
-        });
+      console.log('event', $scope.event);
+      });
+    }
+    else{
+      $state.go('home');
+    }
+}])
+
+
+.controller('WelcomeCtrl', function ($scope, $cordovaGeolocation, $ionicLoading, $ionicPlatform, $state, $cookieStore, $http, UserService) {
+
+    $scope.userType = UserService.get("userType");
+
+    $scope.guestSignin = function () {
+      
+      if (UserService.get("userType") === 'C') {
+            $state.go('list');
       }
+      else{
+        if (UserService.get("userType") === 'N'){
+          $window.alert('Please log in to continue.');
+          $state.go('welcome');
+        }
+        else{
+          $state.go('welcome');
+        }
+      };
+    };
 
-    });
-}])*/
+    $scope.fbLogin = function () {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                getUserInfo();
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        }, {scope: 'email,user_photos,user_videos'});
+
+        function getUserInfo() {
+            FB.api('/me', function (response) {
+                console.log('Facebook Login RESPONSE: ' + angular.toJson(response));
+                FB.api('/me/picture?type=normal', function (picResponse) {
+                    console.log('Facebook Login RESPONSE: ' + picResponse.data.url);
+                    response.imageUrl = picResponse.data.url;
+                    var user = {};
+                    user.userName = response.name;
+                    user.userId = response.id;
+                    user.userStatus = 'A';
+                    UserService.set("userId", response.id);
+                    UserService.set("userStatus", 'A');
+                    console.log("User", UserService.get("userId"), "Response", resp, "User", user);
+                    $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
+                    if(!data)
+                    {
+                      $http.post('https://csrsample.herokuapp.com/users', user).then(function (response) {
+                         if (response.data)
+                            $scope.msg = "Api Call successfull";
+                            console.log('Success---------');
+                          });
+                          $cookieStore.put('userInfo', user);
+                          $state.go('dashboard');
+                    }
+                    else
+                    {
+                      for ( var i = 0; i < data.length; i++)
+                       { 
+                        console.log('inside for');
+                        var obj = data[i]; 
+                        console.log(obj); 
+                        if (obj.userId == user.userId)
+                        {
+                          console.log('inside if');
+                          $cookieStore.put('userInfo', user);
+                          $scope.flag = 1;
+                          break;
+                        }
+                      }
+
+                      if($scope.flag==1 ){
+                        if(UserService.get("userType") == 'C'){
+                        $state.go('list');
+                        }
+
+                        else if(UserService.get("userType") == 'N'){
+                          $state.go('seek');
+                        }
+                      }
+                      else{
+                         $http.post('https://csrsample.herokuapp.com/users', user).then(function (response) {
+                         if (response.data)
+                           $scope.msg = "Api Call successfull";
+                           console.log('Success');
+                         });
+                         $cookieStore.put('userInfo', user);
+                         $state.go('dashboard');
+                       }
+                    }
+                  
+                    });
+
+                });
+            });
+        }
+    };
+    // END FB Login
+
+    // Google Plus Login
+    $scope.gplusLogin = function () {
+        var myParams = {
+            // Replace client id with yours
+            'clientid': '374010870485-pq83isui0ccj4t1ts0elb8eo200ond3k.apps.googleusercontent.com',
+            'cookiepolicy': 'single_host_origin',
+            'callback': loginCallback,
+            'approvalprompt': 'force',
+            'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
+        };
+        gapi.auth.signIn(myParams);
+
+        function loginCallback(result) {
+            if (result['status']['signed_in']) {
+                var request = gapi.client.plus.people.get({'userId': 'me'});
+                request.execute(function (resp) {
+                    console.log('Google+ Login RESPONSE: ' + angular.toJson(resp));
+                    var userEmail;
+                    if (resp['emails']) {
+                        for (var i = 0; i < resp['emails'].length; i++) {
+                            if (resp['emails'][i]['type'] == 'account') {
+                                userEmail = resp['emails'][i]['value'];
+                            }
+                        }
+                    }
+
+
+                    // store data to DB
+                    var user = {};
+                    user.userName = resp.displayName;
+                    /*user.email = userEmail;*/
+                    /*user.email = resp.emails;*/
+                    user.userId = resp.id;
+
+                    user.userStatus = 'A';
+                    UserService.set("userId", resp.id);
+                    //$rootScope.userId = resp.id;
+                    UserService.set("userStatus", 'A');
+                    console.log("User", UserService.get("userId"), "Response", resp, "User", user);
+                   // $rootScope.userStatus = 'A';
+               
+
+
+                    $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
+                    if(!data)
+                    {
+                      $http.post('https://csrsample.herokuapp.com/users', user).then(function (response) {
+                         if (response.data)
+                            $scope.msg = "Api Call successfull";
+                            console.log('Success---------');
+                          });
+                          $cookieStore.put('userInfo', user);
+                          $state.go('dashboard');
+                    }
+                    else
+                    {
+                      for ( var i = 0; i < data.length; i++)
+                       { 
+                        console.log('inside for');
+                        var obj = data[i]; 
+                        console.log(obj); 
+                        if (obj.userId == user.userId)
+                        {
+                          console.log('inside if');
+                          /*$state.go('list');*/
+                          $cookieStore.put('userInfo', user);
+                          $scope.flag = 1;
+                          break;
+                        }
+                      }
+
+                       if($scope.flag==1 ){
+                        if(UserService.get("userType") == 'C'){
+                        $state.go('list');
+                        }
+
+                        else if(UserService.get("userType") == 'N'){
+                          $state.go('seek');
+                        }
+                      }
+                      else{
+                         $http.post('https://csrsample.herokuapp.com/users', user).then(function (response) {
+                         if (response.data)
+                           $scope.msg = "Api Call successfull";
+                           console.log('Success');
+                         });
+                         $cookieStore.put('userInfo', user);
+                         $state.go('dashboard');
+                       }
+                    }
+                  
+                    });
+
+
+                    /*$http.post('http://10.202.249.51:8080/users', user).then(function (response) {
+                      if (response.data)
+                       $scope.msg = "Api Call successfull";
+                        console.log('Success');
+       });
+                       
+                    /*user.profilePic = resp.image.url;*/
+
+                });
+            }
+        }
+    };
+    // END Google Plus Login
+    $scope.geo=function(){
+    
+    console.log('in geo');     
+    $ionicPlatform.ready(function() {    
+ 
+        $ionicLoading.show({
+            template: '<ion-spinner icon="bubbles"></ion-spinner><br/>Acquiring location!'
+        });
+         
+        var posOptions = {
+            enableHighAccuracy: true,
+            timeout: 20000,
+            maximumAge: 0
+        };
+ 
+        $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
+            var lat  = position.coords.latitude;
+            var long = position.coords.longitude;
+             
+            var myLatlng = new google.maps.LatLng(lat, long);
+             
+            var mapOptions = {
+                center: myLatlng,
+                zoom: 16,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };          
+             console.log('before map');
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);          
+             console.log('map',map);
+            $scope.map = map;   
+            $ionicLoading.hide();        
+            console.log('lat',lat,'long',long);
+            $scope.lat = lat;
+            $scope.long = long;
+        }, function(err) {
+            $ionicLoading.hide();
+            console.log(err);
+        });
+    }) 
+   };
+
+})
+
+.controller('dashboardCtrl', function ($scope, $window, $state, $cookieStore, $ionicActionSheet,$ionicLoading,UserService) {
+    
+    $scope.user = $cookieStore.get('userInfo');
+
+    $scope.logout = function () {
+      console.log('In logout');
+        $cookieStore.remove("userInfo");
+        console.log("Hello");
+        console.log('userInfo');
+        UserService.set("userStatus", 'T');
+        $state.go('welcome');
+        UserService.remove("userStatus");
+        UserService.remove("userId");
+        UserService.remove("userType");
+
+        
+        $window.location.reload();
+      
+    };
+
+    $scope.submit = function () {
+      console.log('In submit');
+        if (UserService.get("userType") == 'C') {
+            $state.go('list');
+        }
+        else{
+           if (UserService.get("userType") == 'N'){
+             $state.go('seek');
+           }
+           else{
+            $state.go('welcome');
+           }
+        }       
+        $window.location.reload();
+        
+    };
+});
+
