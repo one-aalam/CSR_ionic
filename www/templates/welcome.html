@@ -18,12 +18,9 @@
 
             <div>
                 <div ng-if="userType === 'C'">
-                    <button class="button button-calm button-large" ng-click="guestSignin()" ng-disabled="userType === 'N'">Guest Sign In</button>
+                    <button class="button button-calm button-large" ng-click="guestSignin()">Guest Sign In</button>
                 </div>
 
-                <div ng-if="userType === 'N'">
-                    <button class="button button-calm button-large" ng-click="guestSignin()" ng-disabled=true>Guest Sign In</button>
-                </div>
             </div>
            
             <div id="map" style="width: 500px;height: 500px;">

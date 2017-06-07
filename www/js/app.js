@@ -136,18 +136,21 @@ angular.module('starter', ['ngCookies', 'ionic','ngCordova'])
 /*.controller('ListController', ['$scope', '$http', '$state', '$ionicHistory,'UserService',
     function($scope, $http, $state,UserService) {
 .goBack()*/
-.controller('ListController', ['$scope', '$http', '$state','UserService',
-    function($scope, $http, $state,UserService) {
+.controller('ListController', ['$scope', '$http', '$state','UserService','DataService',
+    function($scope, $http, $state,UserService,DataService) {
 
       console.log('userId : ');
       console.log(UserService.get("userId"));
 
-      $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
+      $scope.ngo = DataService.getApiData();
+      //console.log(ngo);
+
+      /*$http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
       
       $scope.ngo = data;
       console.log('List Controller called');
       console.log(data);
-    });
+    });*/
 }])
 
 .controller('DetailController', ['$scope', '$http', '$state',
@@ -235,8 +238,7 @@ angular.module('starter', ['ngCookies', 'ionic','ngCordova'])
 }])
 
 
-.controller('WelcomeCtrl', function ($scope, $cordovaGeolocation, $ionicLoading, $ionicPlatform, $state, $cookieStore, $http, UserService) {
-
+.controller('WelcomeCtrl', function ($scope, $cordovaGeolocation, $ionicLoading, $ionicPlatform, $state, $cookieStore, $http, UserService, DataService) {
     $scope.userType = UserService.get("userType");
 
     $scope.guestSignin = function () {
@@ -470,15 +472,49 @@ angular.module('starter', ['ngCookies', 'ionic','ngCordova'])
              console.log('map',map);
             $scope.map = map;   
             $ionicLoading.hide();        
-            console.log('lat',lat,'long',long);
-            $scope.lat = lat;
-            $scope.long = long;
-        }, function(err) {
-            $ionicLoading.hide();
-            console.log(err);
+            console.log('lat1',lat,'long1',long);
+            $scope.lat1 = lat;
+            $scope.long1 = long;
+            /*UserService.set("lat1", lat);
+            UserService.set("lon1", long);
+            console.log(UserService.get(lat1));*/
+            /*var newobj= DataService.getCharityAPI();
+            newobj.then(
+              function() {
+                console.log("abc",newobj);
+                  //$scope.movieContent = payload.data;
+
+                }); */
+
+            $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
+              console.log('api called');
+              var ngoData = data;
+              /*var distance;
+              for ( var i = 0; i < ngoData.length;i++)
+              { 
+                console.log('inside for');
+                var obj = data[i]; 
+                console.log(obj); 
+                                
+               // distance[i] = getDistanceFromLatLonInKm($scope.lat1,$scope.long1,obj.latitude,obj.longitude);
+                distance = getDistanceFromLatLonInKm($scope.lat1,$scope.long1,obj.latitude,obj.longitude);
+                ngoData[i]["distance"] = distance;
+                console.log('distance',ngoData);
+
+              }*/
+             //istance.sort();
+             //onsole.log('distance',distance);
+             DataService.setDistance(data,$scope.lat1,$scope.long1);
+
+             });
+             }, function(err) {
+             $ionicLoading.hide();
+             console.log(err);
         });
     }) 
    };
+
+   
 
 })
 
@@ -518,5 +554,73 @@ angular.module('starter', ['ngCookies', 'ionic','ngCordova'])
         $window.location.reload();
         
     };
-});
+})
 
+.service('DataService', function ($http) {
+       // var property = 'First';
+       var apiData;
+        return {
+           /* getProperty: function () {
+                return property;
+            },
+            setProperty: function(value) {
+                property = value;
+            }*/
+            /*function getCharityAPI() {
+              console.log("getCharityAPI");
+              $http.get('https://csrsample.herokuapp.com/charity').success(function(data) { 
+                apiData = data;
+                console.log("return dta",data);
+                return data;
+              });
+            }*/
+
+            setDistance: function(data,lat,long) {
+              apiData = data;
+              // body...
+              var distance;
+              function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+                var R = 6371; // Radius of the earth in km
+                var dLat = deg2rad(lat2-lat1);  // deg2rad below
+                var dLon = deg2rad(lon2-lon1); 
+                var a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2); 
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                var d = R * c; // Distance in km
+                return d;
+              }
+
+              function deg2rad(deg) {
+                return deg * (Math.PI/180)
+              }
+                  //apiData = getApiData();
+              for ( var i = 0; i < apiData.length;i++)
+              { 
+                console.log(lat,long,apiData[i].latitude,apiData[i].longitude);
+
+                distance = getDistanceFromLatLonInKm(lat,long,apiData[i].latitude,apiData[i].longitude);
+                apiData[i]["distance"] = distance;
+                console.log('distance',apiData);
+              }
+            },
+
+            getApiData: function() {
+              
+                function sortByKey(array, key) {
+                    return array.sort(function(a, b) {
+                        var x = a[key]; var y = b[key];
+                        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+                    });
+                }
+                console.log('getApiData',apiData);
+
+                apiSortedData = sortByKey(apiData, 'distance');
+             
+                return apiSortedData;
+            }
+
+
+        };
+    });
