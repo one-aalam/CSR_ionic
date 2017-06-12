@@ -141,6 +141,35 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         console.log('Inside List Controller');
         $scope.ngo = DataService.getApiData();
         console.log('ngo', $scope.ngo);
+
+        $scope.GetLocation = function(address) {
+        	console.log('Inside GetLocation');
+            var geocoder = new google.maps.Geocoder();
+            //var address = document.getElementById("txtAddress").value;
+            var address = address;
+            console.log('address',address);
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var latitude = results[0].geometry.location.lat();
+                    var longitude = results[0].geometry.location.lng();
+                    console.log('lat',latitude,'long',longitude);
+                    /*DataService.search(latitude,longitude).then(function () {
+                    	console.log('get API data called after search');
+                    	$scope.ngo = DataService.getApiData();
+        			});*/
+
+        			DataService.search(latitude,longitude, function () {
+        				console.log('get API data called after search');
+                    	$scope.ngo = DataService.getApiData();
+        			});
+
+                } else {
+                    console.log("Request failed.");
+                }
+            });
+        };
+
+
     }
 ])
 
@@ -160,7 +189,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 
 .controller('putserviceCtrl', ['$scope', '$http', '$state', 'UserService', function($scope, $http, $state, UserService) {
 
-    if (UserService.get("userStatus") == 'A') {
+    if (UserService.get("userStatus")) {
         $scope.cause = null;
         console.log('putserviceCtrl called');
         $scope.requirement = [];
@@ -209,7 +238,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         });
     };
     console.log(UserService.get("userSatus"));
-    if (UserService.get("userStatus") == 'A') {
+    if (UserService.get("userStatus")) {
         $scope.pageData = {
             charity: "",
             event: "",
@@ -230,7 +259,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 }])
 
 
-.controller('WelcomeCtrl', function($scope, $cordovaGeolocation, $ionicLoading, $ionicPlatform, $state, $cookieStore, $http, UserService, DataService) {
+.controller('WelcomeCtrl', function($scope, $state, $cookieStore, $http, UserService, DataService) {
     $scope.userType = UserService.get("userType");
 
     $scope.guestSignin = function() {
@@ -270,9 +299,8 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                     var user = {};
                     user.userName = response.name;
                     user.userId = response.id;
-                    user.userStatus = 'A';
                     UserService.set("userId", response.id);
-                    UserService.set("userStatus", 'A');
+                    UserService.set("userStatus", true);
                     console.log("User", UserService.get("userId"), "Response", resp, "User", user);
                     $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
                         if (!data) {
@@ -362,11 +390,9 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                     /*user.email = userEmail;*/
                     /*user.email = resp.emails;*/
                     user.userId = resp.id;
-
-                    user.userStatus = 'A';
                     UserService.set("userId", resp.id);
                     //$rootScope.userId = resp.id;
-                    UserService.set("userStatus", 'A');
+                    UserService.set("userStatus", true);
                     console.log("User", UserService.get("userId"), "Response", resp, "User", user);
                     // $rootScope.userStatus = 'A';
 
@@ -439,7 +465,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 
 })
 
-.controller('dashboardCtrl', function($scope, $window, $state, $cookieStore, $ionicActionSheet, $ionicLoading, UserService) {
+.controller('dashboardCtrl', function($scope, $window, $state, $cookieStore, UserService,DataService) {
 
     $scope.user = $cookieStore.get('userInfo');
 
@@ -448,7 +474,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         $cookieStore.remove("userInfo");
         console.log("Hello");
         console.log('userInfo');
-        UserService.set("userStatus", 'T');
+        UserService.set("userStatus", false);
         $state.go('welcome');
         UserService.remove("userStatus");
         UserService.remove("userId");
@@ -575,7 +601,28 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                 console.log(err);
             });
         })
-    }
+    };
 
+    this.search = function(lat,long,cb) {
+        console.log('in search');
+        var ngoData = that.apiData;
+        console.log('ngoData initialised',ngoData);
+
+        angular.forEach(ngoData, function(obj, index) {
+            console.log(lat, long, obj.latitude, obj.longitude);
+
+            var distance = getDistanceFromLatLonInKm(lat, long, obj.latitude, obj.longitude);
+
+            obj["distance"] = distance;
+        });
+
+        console.log('ngoData from search', ngoData);
+
+        that.apiData = ngoData;
+        if (cb) {
+            cb();
+        }
+    };
+         
     return this;
 });

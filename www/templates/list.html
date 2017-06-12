@@ -4,8 +4,19 @@
   class="has-subheader">
   <ion-refresher on-refresh="doRefresh()">
   </ion-refresher>
+    
+    <div id="txtAddress">          
+      <label class="item item-input">
+          <input ng-model="address" type="text" placeholder="Enter Location">
+      </label>         
+      <button class="button button-calm" ng-click="GetLocation(address)">Search</button>
+
+    </div> 
+
+
 
   <ion-list >
+  
     <ion-item ng-repeat='item in ngo | filter: query'
     class="item item-thumbnail-left" href="#/list/{{item.ngoId}}">
       <img ng-src="img/{{item.ngoName}}.jpg"
