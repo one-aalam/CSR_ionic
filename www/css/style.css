@@ -117,6 +117,11 @@ div.firstContainer {
   border-right: none;
 }
 
+.item-content h1 {
+  margin-top: 38px;
+  margin-bottom: 18px;
+}
+
 .item .item-content h2 {
   font-size: 30px;
 }
@@ -133,6 +138,26 @@ div.firstContainer {
 
 .item-thumbnail-left img {
   border-radius: 10px;
+}
+
+.item-accordion-container.active .item.item-accordion {
+  display: block;
+}
+
+.item.item-accordion {
+  display: none;
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.5 all linear;
+}
+.item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.item.item-accordion.ng-hide-add,
+.item.item-accordion.ng-hide-remove,
+.item.item-accordion.ng-show {
+  display: block !important;
 }
 
 .item h3 {

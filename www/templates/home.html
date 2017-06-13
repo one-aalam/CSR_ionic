@@ -1,23 +1,18 @@
 <ion-view hide-nav-bar="true" view-title= "Welcome">
 <ion-header-bar class="bar-header bar-calm">
         <div class="title uppercase">Welcome</div>
-       <!--  <button class="button button-clear" ng-click="logout()">Logout</button> -->
+      
     </ion-header-bar>
   <ion-content class="splash padding">
-    <div class="branding">
+    <div class="branding" id="map" style="width: 500px;height: 500px;">
       <div class="tagline"></div>
-       <!-- <a href="#/list" ng-controller="ListController"><button class="button" button-large>  Provide Help</button></a> -->
-
-
-
-       <a href="#" ng-controller="CustomerController"> <button class="button button-calm" button-large ng-click="setUserType()">  Provide Help</button></a>
+       
+      
+       <button class="button button-calm" button-large ng-click="setUserType('C')">  Provide Help</button>
 
        <br>
-       <!-- <a href="#/seek"><button class="button" button-large>  Seek Help</button></a> -->
 
-        <a href="#" ng-controller="NGOController"> <button class="button button-calm" button-large ng-click="setUserType()">  Seek Help</button></a>
-
-       <!-- <a href="#/welcome" ><button class="button" button-large>  Login</button></a> -->
+        <button class="button button-calm" button-large ng-click="setUserType('N')">  Seek Help</button>
 
       </div>
   </ion-content>
