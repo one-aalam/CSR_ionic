@@ -1,0 +1,37 @@
+<ion-view view-title="NGO">
+
+<ion-content 
+  class="has-subheader">
+  <ion-refresher on-refresh="doRefresh()">
+  </ion-refresher>
+    
+    <div id="txtAddress">          
+      <label class="item item-input">
+          <input ng-model="address" type="text" placeholder="Enter Location">
+      </label>         
+      <button class="button button-calm" ng-click="GetLocation(address)">Search</button>
+
+    </div> 
+
+
+
+  <ion-list >
+  
+    <ion-item ng-repeat='item in ngo | filter: query'
+    class="item item-thumbnail-left" href="#/list/{{item.ngoId}}">
+      <img ng-src="img/{{item.ngoName}}.jpg"
+        alt="{{ item.ngoName }} Photo"></img>
+      <h1>{{item.ngoName}}</h1>
+
+      <ion-item ng-repeat="item in item.charityEvent">
+          <h2>{{item.cause}}</h2>
+
+          <ion-item ng-repeat="item in item.requirement">
+            <h3>{{item.category}} : {{item.product}} - {{item.quantity}}</h3>
+
+          </ion-item>
+      </ion-item>
+    </ion-item>
+  </ion-list>
+</ion-content>
+</ion-view>

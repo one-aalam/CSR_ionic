@@ -1,0 +1,32 @@
+<ion-view>
+
+    <ion-header-bar class="bar-header bar-positive">
+        <div class="title uppercase">Welcome</div>
+        <button class="button button-clear" ng-click="logout()">Logout</button>
+    </ion-header-bar>
+    <ion-content>
+        <div class="list">
+            <div class="profile-container">
+                    <div ng-if="user.profilePic" class="profile-pic" ng-style="{'background-image': 'url(' + user.profilePic + ')'}"></div>
+                    <div ng-if="!user.profilePic" class="profile-pic" style="background-image: url(img/profile-pic-default.png)"></div>
+                <div id="myDiv">
+                    <div id="color">
+                        <div id="effect"></div>
+                    </div>
+                </div>
+              
+            </div>
+            <div class="list">
+                
+                <label class="item item-input">
+                    <span class="input-label">Display Name</span>
+                    <input ng-model="user.userName" type="text" placeholder="Enter your Name">
+                </label>
+                
+                <br>
+                <button class="button button-calm" ng-click="submit()">Submit</button>
+
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

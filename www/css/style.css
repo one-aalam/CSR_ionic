@@ -1,0 +1,213 @@
+
+body {
+  cursor: url('http://ionicframework.com/img/finger.png');
+}
+
+.star>.item-content {
+  background-color: #EEE8D6 !important;
+}
+
+.splash {
+  background: url(../img/skyline.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.branding {
+  width : auto;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 80px;
+  text-align: center;
+}
+
+.branding button {
+  margin: 20px 0;
+  padding: 35px 0;
+  font-size: 50px;
+  width: 300px;
+}
+
+#social-links ul li , .login-btns div{
+  text-align: center;
+  margin: 20px auto;
+  height: auto;
+}
+
+.scroll {
+  text-align: center;
+  margin-left: 0 auto;
+}
+.ionic-scroll .item-input {
+ border: none;
+ padding-right: 30px;
+ width: 1050px;
+ margin: 0 auto;
+}
+
+.ionic-scroll .input-label,.ionic-scroll input[type=text] {
+  color: #000;
+  font-size: 35px;
+  height: auto;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.ionic-scroll .input-label {
+  padding: 20px;
+}
+
+.ionic-scroll input[type=text] {
+  border-bottom: 1px solid rgba(232, 232, 232, 1);
+  width: auto;
+  line-height: 40px;
+}
+
+.ionic-scroll input[type=button] {
+  font-size:25px;
+  color: #fff;
+  background-color: #11c1f3;
+}
+
+.list .button.button-calm {
+  padding: 0 25px;
+  margin:10px;
+}
+
+
+
+div.firstContainer {
+  padding-bottom: 40px;
+  border-bottom: 1px solid #000;
+  margin-bottom: 40px;
+}
+.ion-item span {
+  margin-left: -35px;
+  padding-right: 20px;
+}
+
+.ion-item .checkbox {
+  top: 13px
+}
+
+.ion-item h3 {
+  display: inline;
+}
+
+.ionic-scroll .item-body {
+  border: none;
+}
+.tagline {
+  font-size: 1.4rem;
+}
+
+.branding p {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.item-divider {
+  background-color: #EEE8D6;
+}
+
+.item-content .item {
+  border-left: none;
+  border-right: none;
+}
+
+.item .item-content h2 {
+  font-size: 30px;
+}
+
+.item .item-content h3 {
+  font-size: 25px;
+  color : #000;
+}
+
+.bar-positive, .tabs-positive>.tabs {
+  background-color: #417D9A !important;
+  border-color:  #417D9A;
+}
+
+.item-thumbnail-left img {
+  border-radius: 10px;
+}
+
+.item h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #417D9A;
+}
+
+.dayhighlight {
+  background-color: #9EC6DE;
+  border-top: 20px transparent;
+}
+
+.dayhighlight h2 {
+  color: #417D9A;
+  font-size: 2rem;
+  font-weight: 200;
+}
+
+.border{
+  border:  transparent;
+  text-align: left;
+}
+
+/*    Media Queries-----*/
+@media (min-width: 567px) and (max-width:992px) {
+  .ionic-scroll .input-label,.ionic-scroll input[type=text] {
+    font-size:25px;
+  }
+  .ionic-scroll input[type=button] {
+    font-size: 22px;
+  }
+  .ionic-scroll .item-input {
+    width: 900px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 567px) {
+  .ionic-scroll .input-label,.ionic-scroll input[type=text] {
+    font-size:16px;
+  }
+  .ionic-scroll input[type=text] {
+    line-height: 20px;
+  }
+  .ionic-scroll .item-input {
+    padding:0;
+    width: 300px;
+    margin: 0 auto;
+  }
+  .ionic-scroll .input-label {
+    padding: 10px;
+  }
+  .ionic-scroll input[type=button] {
+    font-size: 18px;
+  }
+  .list .item-thumbnail-left .item-content {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .item-content h1 {
+    margin-top: 12px;
+    margin-bottom: 18px;
+  }
+
+  .item .item-content h2 {
+    font-size: 25px;
+  }
+
+  .item .item-content h3 {
+    font-size: 20px;
+  }
+
+  .list .item-thumbnail-left .item-content > img:first-child {
+    max-height: 60px;
+    max-width: 60px
+  }
+}
