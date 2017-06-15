@@ -143,7 +143,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         console.log('ngo', $scope.ngo);
 
         $scope.GetLocation = function(address) {
-        	console.log('Inside GetLocation');
+          console.log('Inside GetLocation');
             var geocoder = new google.maps.Geocoder();
             //var address = document.getElementById("txtAddress").value;
             var address = address;
@@ -154,14 +154,14 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                     var longitude = results[0].geometry.location.lng();
                     console.log('lat',latitude,'long',longitude);
                     /*DataService.search(latitude,longitude).then(function () {
-                    	console.log('get API data called after search');
-                    	$scope.ngo = DataService.getApiData();
-        			});*/
+                      console.log('get API data called after search');
+                      $scope.ngo = DataService.getApiData();
+              });*/
 
-        			DataService.search(latitude,longitude, function () {
-        				console.log('get API data called after search');
-                    	$scope.ngo = DataService.getApiData();
-        			});
+              DataService.search(latitude,longitude, function () {
+                console.log('get API data called after search');
+                      $scope.ngo = DataService.getApiData();
+              });
 
                 } else {
                     console.log("Request failed.");
