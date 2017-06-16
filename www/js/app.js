@@ -94,6 +94,15 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         cache: false
     })
 
+    .state('signIn',{
+      url: "/signIn",
+      templateUrl: "templates/SignIn.html",
+        controller: 'WelcomeCtrl',
+        cache: false
+    }
+      )
+    
+
     .state('dashboard', {
         url: "/dashboard",
         templateUrl: "templates/dashboard.html",
@@ -280,6 +289,16 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
             }
         };
     };
+
+    $scope.Signin = function(userId, password){
+      var data = {
+                userId: userId,
+                password: password
+            };
+       $http.post('https://csrsample.herokuapp.com/login', data)
+          
+               $state.go('seek');
+            };
 
     $scope.fbLogin = function() {
         FB.login(function(response) {
