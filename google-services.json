@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "374010870485",
+    "project_id": "signin-165309"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374010870485:android:b9c89176e54d0a4d",
+        "android_client_info": {
+          "package_name": "com.ionicframework.blankapp739069"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374010870485-ktk167vtfri4arb452patl4erp97uc19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ionicframework.blankapp739069",
+            "certificate_hash": "bd8388245e24825b3283a0343bfea4f175b73f0b"
+          }
+        },
+        {
+          "client_id": "374010870485-pq83isui0ccj4t1ts0elb8eo200ond3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYhwReevKzBJ2R4UZ0TCAYTkX6e_vXKY0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

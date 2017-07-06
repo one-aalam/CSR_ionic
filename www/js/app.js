@@ -1,4 +1,4 @@
-angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
+angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
 
 .run(function($rootScope, $cookieStore, $state, $ionicPlatform, $window) {
@@ -25,6 +25,9 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                 }
             })
         }
+        /*if (window.cordova && window.cordova.InAppBrowser) {
+            window.open = cordova.InAppBrowser.open;
+        }*/
         if (window.StatusBar) {
             StatusBar.styleDefault();
             console.log('in cordova');
@@ -279,6 +282,22 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         };
     };
 
+<<<<<<< Updated upstream
+=======
+    $scope.Signin = function(userId, password){
+      var data = {
+                userId: userId,
+                password: password
+            };
+       $http.post('https://csrsample.herokuapp.com/login', data, function(response){
+        var abc= reponse;
+        return response;
+       })
+                console.log('data',data);
+               $state.go('seek');
+            };
+
+>>>>>>> Stashed changes
     $scope.fbLogin = function() {
         FB.login(function(response) {
             if (response.authResponse) {
@@ -357,6 +376,12 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 
     // Google Plus Login
     $scope.gplusLogin = function() {
+     
+
+
+        gapi.client.setApiKey(null);
+            gapi.client.load('plus', 'v1', function () {
+            });
         var myParams = {
             // Replace client id with yours
             'clientid': '374010870485-pq83isui0ccj4t1ts0elb8eo200ond3k.apps.googleusercontent.com',
@@ -365,6 +390,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
             'approvalprompt': 'force',
             'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
         };
+
         gapi.auth.signIn(myParams);
 
         function loginCallback(result) {
@@ -597,8 +623,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 
                 });
             }, function(err) {
-                $ionicLoading.hide();
-                console.log(err);
+              
             });
         })
     };
