@@ -1,5 +1,7 @@
 <ion-view view-title="NGO">
-
+<ion-header-bar class="bar-header bar-calm">
+        <div class="title uppercase">Welcome</div>
+  </ion-header-bar>
 <ion-content 
   class="has-subheader">
   <ion-refresher on-refresh="doRefresh()">
@@ -28,12 +30,12 @@
             alt="{{ item.ngoName }} Photo"></img>
           <h1>{{item.ngoName}}</h1>
           <ion-item class="item-accordion"
-                ng-repeat="subItem in item.charityEvent">
-                {{subItem.cause}}
-            <ion-item ng-repeat="itemDetail in subItem.requirement">
+              ng-repeat="subItem in item.charityEvent" href="#/list/{{item.ngoId}}">
+              {{subItem.cause}}
+              <ion-item ng-repeat="itemDetail in subItem.requirement">
               <h3>{{itemDetail.category}} : {{itemDetail.product}} - {{itemDetail.quantity}}</h3>
             </ion-item>
-            </ion-item>
+          </ion-item>
       </ion-item>
       </div>
    </ion-list>
