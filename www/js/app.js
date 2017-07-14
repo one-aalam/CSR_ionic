@@ -97,6 +97,15 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
         cache: false
     })
 
+    .state('signIn',{
+      url: "/signIn",
+      templateUrl: "templates/SignIn.html",
+        controller: 'WelcomeCtrl',
+        cache: false
+    }
+      )
+    
+
     .state('dashboard', {
         url: "/dashboard",
         templateUrl: "templates/dashboard.html",
@@ -146,25 +155,27 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
         console.log('ngo', $scope.ngo);
 
         $scope.GetLocation = function(address) {
-        	console.log('Inside GetLocation');
+            console.log('Inside GetLocation');
             var geocoder = new google.maps.Geocoder();
             //var address = document.getElementById("txtAddress").value;
             var address = address;
-            console.log('address',address);
-            geocoder.geocode({ 'address': address }, function (results, status) {
+            console.log('address', address);
+            geocoder.geocode({
+                'address': address
+            }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var latitude = results[0].geometry.location.lat();
                     var longitude = results[0].geometry.location.lng();
-                    console.log('lat',latitude,'long',longitude);
+                    console.log('lat', latitude, 'long', longitude);
                     /*DataService.search(latitude,longitude).then(function () {
-                    	console.log('get API data called after search');
-                    	$scope.ngo = DataService.getApiData();
-        			});*/
+                      console.log('get API data called after search');
+                      $scope.ngo = DataService.getApiData();
+              });*/
 
-        			DataService.search(latitude,longitude, function () {
-        				console.log('get API data called after search');
-                    	$scope.ngo = DataService.getApiData();
-        			});
+                    DataService.search(latitude, longitude, function() {
+                        console.log('get API data called after search');
+                        $scope.ngo = DataService.getApiData();
+                    });
 
                 } else {
                     console.log("Request failed.");
@@ -268,7 +279,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
     $scope.guestSignin = function() {
 
         if (UserService.get("userType") === 'C') {
-            DataService.geo(function() {
+            DataService.geoAPI(function() {
                 console.log('After geo called inside guestSignIn of welcomeCtrl');
                 $state.go('list');
             });
@@ -282,13 +293,17 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
         };
     };
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 618ec5ba2d157c8ba5546a5d93ba0b96d006787c
     $scope.Signin = function(userId, password){
       var data = {
                 userId: userId,
                 password: password
             };
+<<<<<<< HEAD
        $http.post('https://csrsample.herokuapp.com/login', data, function(response){
         var abc= reponse;
         return response;
@@ -298,6 +313,13 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
             };
 
 >>>>>>> Stashed changes
+=======
+       $http.post('https://csrsample.herokuapp.com/login', data)
+          
+               $state.go('seek');
+            };
+
+>>>>>>> 618ec5ba2d157c8ba5546a5d93ba0b96d006787c
     $scope.fbLogin = function() {
         FB.login(function(response) {
             if (response.authResponse) {
@@ -345,7 +367,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
                             if ($scope.flag == 1) {
                                 if (UserService.get("userType") == 'C') {
-                                    DataService.geo(function() {
+                                    DataService.geoAPI(function() {
                                         console.log('geo called when existing user try to login');
                                         $state.go('list');
                                     });
@@ -449,7 +471,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
                             if ($scope.flag == 1) {
                                 if (UserService.get("userType") == 'C') {
-                                    DataService.geo(function() {
+                                    DataService.geoAPI(function() {
                                         console.log('geo called inside welcome when existing user try to login');
                                         $state.go('list');
                                     });
@@ -491,7 +513,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
 })
 
-.controller('dashboardCtrl', function($scope, $window, $state, $cookieStore, UserService,DataService) {
+.controller('dashboardCtrl', function($scope, $window, $state, $cookieStore, UserService, DataService) {
 
     $scope.user = $cookieStore.get('userInfo');
 
@@ -514,7 +536,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
     $scope.submit = function() {
         console.log('In submit');
         if (UserService.get("userType") == 'C') {
-            DataService.geo(function() {
+            DataService.geoAPI(function() {
                 console.log('geo called inside welcome when new user try to login');
                 $state.go('list');
             });
@@ -563,10 +585,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
     this.getApiData = function() {
         console.log('getApiData', this.apiData);
-        if (this.apiData.length) {
-            return sortByKey(this.apiData, 'distance');
-        }
-        return;
+        return this.apiData;
     };
 
     this.geo = function(cb) {
@@ -628,10 +647,58 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
         })
     };
 
-    this.search = function(lat,long,cb) {
+    this.geoAPI = function(cb) {
+        console.log('in geo');
+        $ionicPlatform.ready(function() {
+
+            $ionicLoading.show({
+                template: '<ion-spinner icon="bubbles"></ion-spinner><br/>Acquiring location!'
+            });
+
+            var posOptions = {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 0
+            };
+
+            $cordovaGeolocation.getCurrentPosition(posOptions).then(function(position) {
+                var lat = position.coords.latitude,
+                    long = position.coords.longitude,
+                    myLatlng = new google.maps.LatLng(lat, long),
+                    mapOptions = {
+                        center: myLatlng,
+                        zoom: 16,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                console.log('before map');
+                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                console.log('map', map);
+                //$scope.map = map;   
+                $ionicLoading.hide();
+                console.log('lat1', lat, 'long1', long);
+                var lat1 = lat;
+                var long1 = long;
+
+                $http.get('https://csrsample.herokuapp.com/calculateDistance/' + encodeURI(lat1) + '/' + encodeURI(long1)).success(function(data) {
+                    console.log('api called');
+                    that.apiData = data;
+
+                    if (cb) {
+                        cb();
+                    }
+
+                });
+            }, function(err) {
+                $ionicLoading.hide();
+                console.log(err);
+            });
+        })
+    };
+
+    this.search = function(lat, long, cb) {
         console.log('in search');
         var ngoData = that.apiData;
-        console.log('ngoData initialised',ngoData);
+        console.log('ngoData initialised', ngoData);
 
         angular.forEach(ngoData, function(obj, index) {
             console.log(lat, long, obj.latitude, obj.longitude);
@@ -648,6 +715,20 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
             cb();
         }
     };
-         
+
+    this.searchAPI = function(lat, long, cb) {
+        console.log('in search');
+        $http.get('https://csrsample.herokuapp.com/calculateDistance/' + encodeURI(lat) + '/' + encodeURI(long)).success(function(data) {
+            console.log('api called');
+            that.apiData = ngoData;
+            console.log('api data inside searchAPI', that.apiData);
+        });
+        
+        if (cb) {
+            cb();
+        }
+
+    };
+
     return this;
 });

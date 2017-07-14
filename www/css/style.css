@@ -47,6 +47,16 @@ body {
  margin: 0 auto;
 }
 
+.ionic-scroll #txtAddress .item-input {
+  padding: 16px;
+}
+
+#txtAddress button {
+  margin: 20px 0;
+  font-size: 30px;
+  width: 300px;
+}
+
 .ionic-scroll .input-label,.ionic-scroll input[type=text] {
   color: #000;
   font-size: 35px;
@@ -117,6 +127,11 @@ div.firstContainer {
   border-right: none;
 }
 
+.item-content h1 {
+  margin-top: 38px;
+  margin-bottom: 18px;
+}
+
 .item .item-content h2 {
   font-size: 30px;
 }
@@ -133,6 +148,26 @@ div.firstContainer {
 
 .item-thumbnail-left img {
   border-radius: 10px;
+}
+
+.item-accordion-container.active .item.item-accordion {
+  display: block;
+}
+
+.item.item-accordion {
+  display: none;
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.5 all linear;
+}
+.item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.item.item-accordion.ng-hide-add,
+.item.item-accordion.ng-hide-remove,
+.item.item-accordion.ng-show {
+  display: block !important;
 }
 
 .item h3 {
@@ -152,9 +187,47 @@ div.firstContainer {
   font-weight: 200;
 }
 
-.border{
+.list h1 pre {
+  font-size: 35px;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-align: center;
+}
+
+.ionic-scroll .list-inset .item{
   border:  transparent;
   text-align: left;
+  width: 1050px;
+  margin: 0 auto;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.border pre, .list pre {
+  color: #000;
+  font-size: 25px;
+  height: auto;
+  padding: 20px;
+}
+
+.list h1 pre {
+  position: static;
+  left: 0;
+  transform: none;
+}
+
+.list pre {
+  width: 1070px;
+  margin: 0 auto;
+  text-align: left;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.border u , .list u{
+  color: #808080;
 }
 
 /*    Media Queries-----*/
@@ -197,17 +270,70 @@ div.firstContainer {
     margin-top: 12px;
     margin-bottom: 18px;
   }
-
+  .list .item {
+    padding-left: 10px;
+  }
+ .list .item h1 {
+   font-size:27px;
+   margin-bottom: 20px;
+ }
   .item .item-content h2 {
     font-size: 25px;
   }
 
   .item .item-content h3 {
+    font-size: 17px;
+  }
+
+  .list .item-thumbnail-left> img:first-child {
+    max-height: 60px;
+    max-width: 60px;
+  }
+
+  .ionic-scroll .list-inset .item{
+    border:  transparent;
+    text-align: left;
+    border: none;
+    width: 800px;
+    padding: 0;
+    position: static;
+    left: 0;
+    transform: none;
+  }
+
+  .list h1 pre {
     font-size: 20px;
   }
 
-  .list .item-thumbnail-left .item-content > img:first-child {
-    max-height: 60px;
-    max-width: 60px
+  .list h1 pre img {
+    width: 120px;
   }
+
+  .border pre, .list pre {
+    color: #000;
+    font-size: 12px;
+    height: auto;
+    padding: 0;
+  }
+  .list pre {
+    width: auto;
+    margin: 0 auto;
+    text-align: left;
+  }
+  #txtAddress button {
+    font-size: 20px;
+    width: 100px;
+  }
+
+  .branding button {
+    padding: 18px 0;
+    font-size: 30px;
+    width: 200px;
+  }
+  .pane .bar .title.title-left , .bar.bar-header .title.title-left {
+    font-size: 22px;
+    text-align: center;
+  }
+
+
 }

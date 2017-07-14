@@ -1,0 +1,28 @@
+
+<ion-view view-title="Sign In">
+<ion-content class="padding" >
+<div ng-controller="WelcomeCtrl">
+ 
+   <label class="item item-input">
+          <span class="input-label">UserId</span>
+          <input type="text" placeholder="UserId" ng-model="userId">
+        </label>
+
+       
+        <label class="item item-input">
+          <span class="input-label">Password</span>
+          <input type="text" placeholder="Password" ng-model="password">
+        </label>
+ 
+       
+        <input type="button" value="Send" ng-click="Signin(userId, password)" /> <br/><br/>
+
+       
+</div>
+
+<!-- <div class="item item-body">
+        <button class="button button-positive" ui-sref="page2">Update Request</button>
+      </div> -->
+
+</ion-content> 
+</ion-view>

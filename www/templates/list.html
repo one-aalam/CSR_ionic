@@ -1,5 +1,7 @@
 <ion-view view-title="NGO">
-
+<ion-header-bar class="bar-header bar-calm">
+        <div class="title uppercase">Welcome</div>
+  </ion-header-bar>
 <ion-content 
   class="has-subheader">
   <ion-refresher on-refresh="doRefresh()">
@@ -15,23 +17,27 @@
 
 
 
-  <ion-list >
-  
-    <ion-item ng-repeat='item in ngo | filter: query'
-    class="item item-thumbnail-left" href="#/list/{{item.ngoId}}">
-      <img ng-src="img/{{item.ngoName}}.jpg"
-        alt="{{ item.ngoName }} Photo"></img>
-      <h1>{{item.ngoName}}</h1>
-
-      <ion-item ng-repeat="item in item.charityEvent">
-          <h2>{{item.cause}}</h2>
-
-          <ion-item ng-repeat="item in item.requirement">
-            <h3>{{item.category}} : {{item.product}} - {{item.quantity}}</h3>
-
+  <ion-list>
+    <div>
+      <ion-item ng-repeat="item in ngo | filter : query"
+        class="item item-stable item-thumbnail-left icon item-accordion-container"
+        ng-click="item.shown = !item.shown"
+        ng-class="{'active': item.shown}"
+        ng-init="item.shown = false;">
+           <!-- <i class="icon" ng-class="isItemShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+           &nbsp; -->
+          <img ng-src="img/{{item.ngoName}}.jpg"
+            alt="{{ item.ngoName }} Photo"></img>
+          <h1>{{item.ngoName}}</h1>
+          <ion-item class="item-accordion"
+              ng-repeat="subItem in item.charityEvent" href="#/list/{{item.ngoId}}">
+              {{subItem.cause}}
+              <ion-item ng-repeat="itemDetail in subItem.requirement">
+              <h3>{{itemDetail.category}} : {{itemDetail.product}} - {{itemDetail.quantity}}</h3>
+            </ion-item>
           </ion-item>
       </ion-item>
-    </ion-item>
-  </ion-list>
+      </div>
+   </ion-list>
 </ion-content>
 </ion-view>
