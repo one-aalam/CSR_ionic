@@ -234,7 +234,8 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
             $state.go('seek');
         };
-    } else {
+    } 
+    else {
         $state.go('home');
     }
 
@@ -253,19 +254,14 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
     };
     console.log(UserService.get("userSatus"));
     if (UserService.get("userStatus")) {
-        $scope.pageData = {
-            charity: "",
-            event: "",
-            requirement: ""
-        };
+        console.log(UserService.get("userId"));
         $http.get('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("userId"))).success(function(data) {
             console.log(data);
 
             $scope.charity = data;
-            $scope.event = data.charityEvent;
-            $scope.requirement = $scope.event.requirement;
-
-            console.log('event', $scope.event);
+             $scope.event = data.charityEvent;
+          
+            console.log('event', $scope.charity);
         });
     } else {
         $state.go('home');
@@ -293,33 +289,36 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
         };
     };
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> 618ec5ba2d157c8ba5546a5d93ba0b96d006787c
+
     $scope.Signin = function(userId, password){
       var data = {
                 userId: userId,
                 password: password
-            };
-<<<<<<< HEAD
-       $http.post('https://csrsample.herokuapp.com/login', data, function(response){
-        var abc= reponse;
+                };
+                console.log("userid from page" , userId);
+
+       $http.post('https://csrsample.herokuapp.com/login', data).success(function(response){
+            console.log("userid from response" ,response.userId);
+
+
+            if(response.userId != "N" || response.userId != "W")
+      /*  var abc= reponse;
         return response;
+          console.log('data',data);*/
+           
+                    UserService.set("userId", response.userId);
+                    //$rootScope.userId = resp.id;
+                    UserService.set("userStatus", true);
+                    console.log("User", UserService.get("userId"), "Response", response);
+               $state.go('seek');
        })
-                console.log('data',data);
-               $state.go('seek');
+              
             };
 
->>>>>>> Stashed changes
-=======
-       $http.post('https://csrsample.herokuapp.com/login', data)
-          
-               $state.go('seek');
-            };
+      
+    
 
->>>>>>> 618ec5ba2d157c8ba5546a5d93ba0b96d006787c
+
     $scope.fbLogin = function() {
         FB.login(function(response) {
             if (response.authResponse) {
