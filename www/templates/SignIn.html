@@ -2,9 +2,10 @@
 <ion-view view-title="Sign In">
 <ion-content class="padding" >
 <div ng-controller="WelcomeCtrl">
+  
  
    <label class="item item-input">
-      <span class="input-label">UserId</span>
+<span class="input-label">UserId</span>
       <input type="text" placeholder="UserId" ng-model="userId"  ng-required="required">
    </label>
 
@@ -13,6 +14,7 @@
       <span class="input-label">Password</span>
       <input type="password" placeholder="Password" ng-model="password" ng-required="required">
    </label>
+
 
    <p>{{errortext}}</p>  
        

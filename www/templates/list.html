@@ -33,7 +33,9 @@
               ng-repeat="subItem in item.charityEvent" href="#/list/{{item.ngoId}}">
               {{subItem.cause}}
               <ion-item ng-repeat="itemDetail in subItem.requirement">
+              <div ng-if="itemDetail.status">
               <h3>{{itemDetail.category}} : {{itemDetail.product}} - {{itemDetail.quantity}}</h3>
+              </div>
             </ion-item>
           </ion-item>
       </ion-item>

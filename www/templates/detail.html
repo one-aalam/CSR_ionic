@@ -23,7 +23,9 @@
            <ion-item ng-repeat="item in charity.charityEvent" class="border"> 
              <pre>  Cause         :    <u>{{item.cause}}</u></pre>
              <ion-item ng-repeat="item in item.requirement" class="border">
+              <div ng-if="item.status">
              <pre> Requirements  :    {{item.category}} : {{item.product}} - {{item.quantity}}</pre>
+             </div>
            </ion-item>
         
       </ion-item>

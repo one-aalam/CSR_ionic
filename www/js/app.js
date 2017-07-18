@@ -243,7 +243,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
                     $scope.msg = "Put Data Method Executed Successfully!";
             });
 
-            $state.go('seek');
+            $state.go('seek',{reload: true});
         };
     } else {
         $state.go('home');
