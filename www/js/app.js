@@ -172,7 +172,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
                       $scope.ngo = DataService.getApiData();
               });*/
 
-                    DataService.search(latitude, longitude, function() {
+                    DataService.searchAPI(latitude, longitude, function() {
                         console.log('get API data called after search');
                         $scope.ngo = DataService.getApiData();
                     });
@@ -301,21 +301,26 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
             console.log("userid from response" ,response.userId);
 
 
-            if(response.userId != "N" || response.userId != "W")
+            if(response.userId === "N" || response.userId === "W"){
       /*  var abc= reponse;
         return response;
           console.log('data',data);*/
+            $state.go('signIn');
            
+           } else {
+
                     UserService.set("userId", response.userId);
                     //$rootScope.userId = resp.id;
                     UserService.set("userStatus", true);
                     console.log("User", UserService.get("userId"), "Response", response);
-               $state.go('seek');
-       })
-              
-            };
 
-      
+               $state.go('seek');
+           
+           }
+        })
+              
+     };
+    
     
 
 
@@ -717,9 +722,11 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
     this.searchAPI = function(lat, long, cb) {
         console.log('in search');
+
+
         $http.get('https://csrsample.herokuapp.com/calculateDistance/' + encodeURI(lat) + '/' + encodeURI(long)).success(function(data) {
             console.log('api called');
-            that.apiData = ngoData;
+            that.apiData = data;
             console.log('api data inside searchAPI', that.apiData);
         });
         
