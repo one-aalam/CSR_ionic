@@ -4,25 +4,21 @@
 <div ng-controller="WelcomeCtrl">
  
    <label class="item item-input">
-          <span class="input-label">UserId</span>
-          <input type="text" placeholder="UserId" ng-model="userId">
-        </label>
+      <span class="input-label">UserId</span>
+      <input type="text" placeholder="UserId" ng-model="userId"  ng-required="required">
+   </label>
 
        
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="text" placeholder="Password" ng-model="password">
-        </label>
- 
-       
-        <input type="button" value="Send" ng-click="Signin(userId, password)" /> <br/><br/>
+   <label class="item item-input">
+      <span class="input-label">Password</span>
+      <input type="password" placeholder="Password" ng-model="password" ng-required="required">
+   </label>
 
+   <p>{{errortext}}</p>  
+       
+   <input type="button" value="Send" ng-click="Signin(userId, password)"/> <br/><br/>
        
 </div>
-
-<!-- <div class="item item-body">
-        <button class="button button-positive" ui-sref="page2">Update Request</button>
-      </div> -->
 
 </ion-content> 
 </ion-view>
