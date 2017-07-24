@@ -2,35 +2,34 @@
 <ion-view view-title="Raise a Request">
 <ion-content class="padding" >
 <div ng-controller="putserviceCtrl">
- 
+    <form role='form' name='form.signInForm' novalidate>
    <label class="item item-input">
           <span class="input-label">Cause</span>
-          <input type="text" placeholder="Cause" ng-model="cause">
+          <input type="text" placeholder="Cause" ng-model="frm.cause">
         </label>
 
        
         <label class="item item-input">
           <span class="input-label">Category</span>
-          <input type="text" placeholder="category" ng-model="category">
+          <input type="text" placeholder="category" ng-model="frm.category" ng-required="required">
         </label>
  
         <label class="item item-input">
           <span class="input-label">Product</span>
-          <input type="text" placeholder="product" ng-model="product">
+          <input type="text" placeholder="product" ng-model="frm.product" ng-required="required">
         </label>
 
          <label class="item item-input">
           <span class="input-label">Quantity</span>
-          <input type="text" placeholder="quantity" ng-model="quantity">
+          <input type="text" placeholder="quantity" ng-model="frm.quantity" ng-required="required">
         </label>
-        <input type="button" value="Send" ng-click="putdata(cause, category, product, quantity)" /> <br/><br/>
+        <input type="submit" value="Send" id="btnsubmit" ng-click="putdata(frm)" ng-disabled="signInForm.$invalid" /> <br/><br/>
+        <input type="button" ng-click="reset()" value="Reset form">
 
         <a href="#" ng-controller="dashboardCtrl"> <button class="button" button-large ng-click="logout()">  Logout</button></a>
 </div>
+</form>
 
-<!-- <div class="item item-body">
-        <button class="button button-positive" ui-sref="page2">Update Request</button>
-      </div> -->
 
 </ion-content> 
 </ion-view>

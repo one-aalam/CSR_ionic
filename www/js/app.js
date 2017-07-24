@@ -213,7 +213,9 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
 
 .controller('putserviceCtrl', ['$scope', '$http', '$state', 'UserService', function($scope, $http, $state, UserService) {
-
+$scope.form = {};
+ $scope.frm = {};
+       
     if (UserService.get("userStatus")) {
         $scope.cause = null;
         console.log('putserviceCtrl called');
@@ -222,14 +224,14 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
         $scope.product = null;
         $scope.quantity = null;
 
-        $scope.putdata = function(cause, category, product, quantity) {
+        $scope.putdata = function(frm) {
             var data = {
-                cause: cause,
+                cause: frm.cause,
                 requirement: [{
                     reqId: new Date().getTime().toString(),
-                    category: category,
-                    product: product,
-                    quantity: quantity,
+                    category: frm.category,
+                    product: frm.product,
+                    quantity: frm.quantity,
                     status: true
                 }]
             };
@@ -241,6 +243,8 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
             $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("userId")) + '/event', data).then(function(response) {
                 if (response.data)
                     $scope.msg = "Put Data Method Executed Successfully!";
+                 $scope.reset();
+
             });
 
             $state.go('seek',{reload: true});
@@ -248,6 +252,11 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
     } else {
         $state.go('home');
     }
+
+   $scope.reset = function() {
+   $scope.frm = {};
+      $scope.form.signInForm.$setPristine();
+};
 
 }])
 
