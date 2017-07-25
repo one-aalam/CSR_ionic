@@ -79,7 +79,9 @@
           <a href="/#/home" class="button button-calm icon ion-home"></a>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
-            <ion-icon class="button button-calm icon ion-person"></ion-icon>
+       
+         <ion-icon class="button button-calm"  ng-controller="dashboardCtrl" ng-hide="show_menu" ng-click="logout()">Logout</ion-icon>
+       
         </ion-nav-buttons>
 
     </ion-nav-bar>

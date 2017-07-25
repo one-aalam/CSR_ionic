@@ -215,6 +215,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 .controller('putserviceCtrl', ['$scope', '$http', '$state', 'UserService', function($scope, $http, $state, UserService) {
 $scope.form = {};
  $scope.frm = {};
+  $scope.errortext = "";
        
     if (UserService.get("userStatus")) {
         $scope.cause = null;
@@ -225,6 +226,7 @@ $scope.form = {};
         $scope.quantity = null;
 
         $scope.putdata = function(frm) {
+               if (frm.cause != null && frm.category != null && frm.product != null && frm.quantity != null) {
             var data = {
                 cause: frm.cause,
                 requirement: [{
@@ -235,12 +237,13 @@ $scope.form = {};
                     status: true
                 }]
             };
+       
 
-            var ngoId = UserService.get("userId");
+            var ngoId = UserService.get("ngoId");
             console.log(UserService.get("userId"));
             console.log("NGOId", ngoId);
 
-            $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("userId")) + '/event', data).then(function(response) {
+            $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("ngoId")) + '/event', data).then(function(response) {
                 if (response.data)
                     $scope.msg = "Put Data Method Executed Successfully!";
                  $scope.reset();
@@ -248,6 +251,9 @@ $scope.form = {};
             });
 
             $state.go('seek',{reload: true});
+        } else{
+             $scope.errortext = "All Fields are necessary";
+        }
         };
     } else {
         $state.go('home');
@@ -265,16 +271,16 @@ $scope.form = {};
 
     $scope.Update = function(reqId) {
         console.log(reqId);
-        console.log("userid", UserService.get("userId"));
-        $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("userId")) + '/delete/' + encodeURI(reqId)).then(function(response) {
+        console.log("userid-ngo", UserService.get("ngoId"));
+        $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("ngoId")) + '/delete/' + encodeURI(reqId)).then(function(response) {
             if (response.data)
                 $scope.msg = "Put Data Method Executed Successfully!";
         });
     };
     console.log(UserService.get("userSatus"));
     if (UserService.get("userStatus")) {
-        console.log(UserService.get("userId"));
-        $http.get('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("userId"))).success(function(data) {
+        console.log(UserService.get("ngoId"));
+        $http.get('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("ngoId"))).success(function(data) {
             console.log(data);
 
             $scope.charity = data;
@@ -309,11 +315,12 @@ $scope.form = {};
     };
 
 
-    $scope.Signin = function(userId, password) {
+    $scope.Signin = function(emailId, password) {
+
         $scope.errortext = "";
-        if (userId != null && password != null) {
+        if (emailId != null && password != null) {
             var data = {
-                userId: userId.substring(0, userId.indexOf('.')),
+                emailId: emailId,
                 password: password
 
             };
@@ -323,16 +330,18 @@ $scope.form = {};
                 console.log("userid from response", response.userId);
 
 
-                if (response.userId === "N" || response.userId === "W") {
+                if (response.emailId === "N" || response.emailId === "W") {
                     $scope.errortext = "Invalid username or password. Please try again";
                     $state.go('signIn');
 
                 } else {
                     UserService.set("userId", response.userId);
-
+                    var ngoId = "csr" +response.userId;
+                     console.log("ngoId", ngoId);
+                    UserService.set("ngoId", ngoId);
                     UserService.set("userStatus", true);
                     console.log("User", UserService.get("userId"), "Response", response);
-
+                    $scope.show_menu = false;
                     $state.go('seek');
 
                 }
@@ -521,7 +530,7 @@ $scope.form = {};
 .controller('dashboardCtrl', function($scope, $window, $state, $cookieStore, UserService, DataService) {
 
     $scope.user = $cookieStore.get('userInfo');
-
+   $scope.show_menu = false;
     $scope.logout = function() {
         console.log('In logout');
         $cookieStore.remove("userInfo");
@@ -532,7 +541,7 @@ $scope.form = {};
         UserService.remove("userStatus");
         UserService.remove("userId");
         UserService.remove("userType");
-
+           $scope.show_menu = true;
 
         $window.location.reload();
 

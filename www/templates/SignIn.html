@@ -3,23 +3,30 @@
 <ion-content class="padding" >
 <div ng-controller="WelcomeCtrl">
   
- 
+ <form name="myForm" novalidate>
    <label class="item item-input">
-<span class="input-label">UserId</span>
-      <input type="text" placeholder="UserId" ng-model="userId"  ng-required="required">
+<span class="input-label">EmailId</span>
+      <input type="email" name="email" placeholder="emailId" ng-model="emailId"  ng-required="required">
    </label>
 
        
    <label class="item item-input">
       <span class="input-label">Password</span>
-      <input type="password" placeholder="Password" ng-model="password" ng-required="required">
+      <input type="password" name="password" placeholder="Password" ng-model="password" ng-required="required">
    </label>
-
+ <div class="padding">
+            <p ng-show="myForm.email.$error.required">* Username is required</p>
+            <p ng-show="myForm.email.$invalid && !myForm.username.$pristine">* Username must be an email address</p>
+            <p ng-show="myForm.email.$error.minlength">* Username must be longer than 5 characters</p>
+            <p ng-show="myForm.password.$error.required">* Password is required</p>
+            <p ng-show="myForm.password.$error.minlength">* Password must be longer than 6 characters</p>
+        </div>
 
    <p>{{errortext}}</p>  
-       
-   <input type="button" value="Send" ng-click="Signin(userId, password)"/> <br/><br/>
-       
+   </div>
+  <div class="padding">     
+   <input type="button" value="Send" ng-disabled="myForm.$invalid" ng-click="Signin(emailId, password)"/> <br/><br/>
+ </form>      
 </div>
 
 </ion-content> 

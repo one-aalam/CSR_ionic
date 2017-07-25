@@ -23,6 +23,7 @@
           <span class="input-label">Quantity</span>
           <input type="text" placeholder="quantity" ng-model="frm.quantity" ng-required="required">
         </label>
+        <p>{{errortext}}</p>
         <input type="submit" value="Send" id="btnsubmit" ng-click="putdata(frm)" ng-disabled="signInForm.$invalid" /> <br/><br/>
         <input type="button" ng-click="reset()" value="Reset form">
 
