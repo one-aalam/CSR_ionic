@@ -22,12 +22,13 @@
             <p ng-show="myForm.password.$error.minlength">* Password must be longer than 6 characters</p>
         </div>
 
-   <p>{{errortext}}</p>  
-   </div>
-  <div class="padding">     
+   
+   <p>{{errortext}}</p>
+   
    <input type="button" value="Send" ng-disabled="myForm.$invalid" ng-click="Signin(emailId, password)"/> <br/><br/>
+   </div>
  </form>      
-</div>
+
 
 </ion-content> 
 </ion-view>

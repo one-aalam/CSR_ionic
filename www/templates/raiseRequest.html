@@ -24,10 +24,10 @@
           <input type="text" placeholder="quantity" ng-model="frm.quantity" ng-required="required">
         </label>
         <p>{{errortext}}</p>
-        <input type="submit" value="Send" id="btnsubmit" ng-click="putdata(frm)" ng-disabled="signInForm.$invalid" /> <br/><br/>
+        <input type="submit" value="Submit" id="btnsubmit" ng-click="putdata(frm)" ng-disabled="signInForm.$invalid" /> <br/><br/>
         <input type="button" ng-click="reset()" value="Reset form">
 
-        <a href="#" ng-controller="dashboardCtrl"> <button class="button" button-large ng-click="logout()">  Logout</button></a>
+        
 </div>
 </form>
 

@@ -76,11 +76,11 @@
         <ion-nav-back-button side="left">Back</ion-nav-back-button>
 
         <ion-nav-buttons side="left">
-          <a href="/#/home" class="button button-calm icon ion-home"></a>
+        
+           <a href="#/home"><button class="button button-calm icon ion-home" button-large></button></a>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
-       
-         <ion-icon class="button button-calm"  ng-controller="dashboardCtrl" ng-hide="show_menu" ng-click="logout()">Logout</ion-icon>
+      <ion-icon class="button button-calm" name="logout"  ng-controller="WelcomeCtrl" ng-show= {{userStatus}} ng-click="logout()">Logout</ion-icon>
        
         </ion-nav-buttons>
 
