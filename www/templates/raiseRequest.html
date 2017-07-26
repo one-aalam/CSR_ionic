@@ -8,12 +8,23 @@
           <input type="text" placeholder="Cause" ng-model="frm.cause">
         </label>
 
-       
-        <label class="item item-input">
+
+        <!-- <label class="item item-input">
           <span class="input-label">Category</span>
           <input type="text" placeholder="category" ng-model="frm.category" ng-required="required">
-        </label>
- 
+        </label> -->
+
+        <label class="item item-input">
+           <span class="input-label">Category</span>
+           <!-- <input type="text" placeholder="category" ng-model="frm.category" ng-required="required"> -->
+           <select data-tap-disabled ng-model="frm.category" ng-change="showSelectValue(frm.category)" ng-required="required">
+              <option value="" disabled selected hidden>Select</option>
+              <option>food</option>
+              <option>flood</option>
+              <option>education</option>
+          </select>
+       </label>
+
         <label class="item item-input">
           <span class="input-label">Product</span>
           <input type="text" placeholder="product" ng-model="frm.product" ng-required="required">
@@ -23,14 +34,15 @@
           <span class="input-label">Quantity</span>
           <input type="text" placeholder="quantity" ng-model="frm.quantity" ng-required="required">
         </label>
-        <p>{{errortext}}</p>
-        <input type="submit" value="Submit" id="btnsubmit" ng-click="putdata(frm)" ng-disabled="signInForm.$invalid" /> <br/><br/>
-        <input type="button" ng-click="reset()" value="Reset form">
+        <p class="error-msg">{{errortext}}</p>
+        <input type="button" class="button button-calm" ng-click="reset()" value="Reset form">
+        <input type="submit" class="submit button button-calm" value="Submit" id="btnsubmit" ng-click="putdata(frm)" ng-disabled="signInForm.$invalid" />
 
-        
+
+
 </div>
 </form>
 
 
-</ion-content> 
+</ion-content>
 </ion-view>

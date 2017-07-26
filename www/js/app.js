@@ -144,8 +144,8 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
 .controller('HomeController', ['$scope', '$state', 'UserService', 'DataService',
     function($scope, $state, UserService, DataService) {
-         
-    
+
+
         // if(UserService.get("userStatus")){
         //     $state.go('seek');
         // }
@@ -228,7 +228,12 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 $scope.form = {};
  $scope.frm = {};
   $scope.errortext = "";
-       
+
+    $scope.showSelectValue = function(mySelect) {
+      console.log(mySelect);
+      //$scope.mySelect = "Category"; 
+  }
+
     if (UserService.get("userStatus")) {
         $scope.cause = null;
         console.log('putserviceCtrl called');
@@ -249,7 +254,7 @@ $scope.form = {};
                     status: true
                 }]
             };
-       
+
 
             var ngoId = UserService.get("ngoId");
             console.log(UserService.get("userId"));
@@ -286,7 +291,7 @@ $scope.form = {};
 
 .controller('GetController', ['$scope', '$http', '$state', 'UserService', function($scope, $http, $state, UserService) {
 
-   
+
     console.log(UserService.get("userSatus"));
     if (UserService.get("userStatus")) {
         console.log(UserService.get("ngoId"));
@@ -315,7 +320,7 @@ $scope.form = {};
 
 .controller('WelcomeCtrl', function($scope, $state, $cookieStore, $http, UserService, DataService) {
     $scope.userType = UserService.get("userType");
-   
+
     if(UserService.get("userStatus")===undefined){
          UserService.set("userStatus", false);
         }
@@ -374,7 +379,7 @@ $scope.form = {};
             })
         }
         else{
-        	
+
         	$scope.errortext = "Username and Password can't be empty";
         }
 
@@ -384,7 +389,7 @@ $scope.form = {};
 
 
     $scope.user = $cookieStore.get('userInfo');
-   
+
     $scope.logout = function() {
         console.log('In logout');
         $cookieStore.remove("userInfo");
@@ -397,7 +402,7 @@ $scope.form = {};
         UserService.remove("userStatus");
         UserService.remove("userId");
         UserService.remove("userType");
-        
+
         $window.location.reload();
 
     };
@@ -635,7 +640,7 @@ $scope.form = {};
                 console.log('before map');
                 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
                 console.log('map', map);
-                //$scope.map = map;   
+                //$scope.map = map;
                 $ionicLoading.hide();
                 console.log('lat1', lat, 'long1', long);
                 var lat1 = lat;

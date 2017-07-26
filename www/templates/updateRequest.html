@@ -3,9 +3,9 @@
  <ion-content class="padding" ng-controller="GetController">
 
       <div class="ion-item"  ng-repeat='item in event' >
-     
-     <h1>{{item.cause}}</h1>
-     
+
+          <h1>{{item.cause}}</h1>
+
 
           <div class="ion-item" ng-repeat="req in item.requirement">
 
@@ -14,16 +14,16 @@
               <label class="checkbox">
                 <input type="checkbox" ng-model="itemchecked" ng-change="Update(req.reqId)" ng-disabled="itemchecked" />
               </label>
-             
+
           </div>
 
           </div>
-    
-       
+
+
      </div>
-     
 
-     
+
+
       </ion-content>
 
 </ion-view>
