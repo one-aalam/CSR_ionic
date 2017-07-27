@@ -2,27 +2,33 @@
 <ion-view view-title="Sign In">
 <ion-content class="padding" >
 <div ng-controller="WelcomeCtrl">
- 
+  
+ <form name="myForm" novalidate>
    <label class="item item-input">
-          <span class="input-label">UserId</span>
-          <input type="text" placeholder="UserId" ng-model="userId">
-        </label>
+<span class="input-label">EmailId</span>
+      <input type="email" name="email" placeholder="emailId" ng-model="emailId"  ng-required="required">
+   </label>
 
        
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="text" placeholder="Password" ng-model="password">
-        </label>
- 
-       
-        <input type="button" value="Send" ng-click="Signin(userId, password)" /> <br/><br/>
+   <label class="item item-input">
+      <span class="input-label">Password</span>
+      <input type="password" name="password" placeholder="Password" ng-model="password" ng-required="required">
+   </label>
+ <div class="padding">
+            <p ng-show="myForm.email.$error.required"><font color="red">* Username is required</font></p>
+            <p ng-show="myForm.email.$invalid && !myForm.username.$pristine"><font color="red">* Username must be an email address</font></p>
+            <p ng-show="myForm.email.$error.minlength"><font color="red">* Username must be longer than 5 characters</font></p>
+            <p ng-show="myForm.password.$error.required"><font color="red">* Password is required</font></p>
+            <p ng-show="myForm.password.$error.minlength"><font color="red">* Password must be longer than 6 characters</font></p>
+        </div>
 
-       
-</div>
+   
+   <p><font color="red">{{errortext}}</font></p>
+   
+   <input type="button" value="Send" ng-disabled="myForm.$invalid" ng-click="Signin(emailId, password)"/> <br/><br/>
+   </div>
+ </form>      
 
-<!-- <div class="item item-body">
-        <button class="button button-positive" ui-sref="page2">Update Request</button>
-      </div> -->
 
 </ion-content> 
 </ion-view>

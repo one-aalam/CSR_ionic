@@ -1,4 +1,4 @@
-angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
+angular.module('starter', ['ngCookies', 'ionic', 'ngCordova', 'ngCordovaOauth'])
 
 
 .run(function($rootScope, $cookieStore, $state, $ionicPlatform, $window) {
@@ -25,6 +25,9 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                 }
             })
         }
+        /*if (window.cordova && window.cordova.InAppBrowser) {
+            window.open = cordova.InAppBrowser.open;
+        }*/
         if (window.StatusBar) {
             StatusBar.styleDefault();
             console.log('in cordova');
@@ -94,14 +97,13 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         cache: false
     })
 
-    .state('signIn',{
-      url: "/signIn",
-      templateUrl: "templates/SignIn.html",
+    .state('signIn', {
+        url: "/signIn",
+        templateUrl: "templates/SignIn.html",
         controller: 'WelcomeCtrl',
         cache: false
-    }
-      )
-    
+    })
+
 
     .state('dashboard', {
         url: "/dashboard",
@@ -128,7 +130,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
     return this;
 })
 
-.controller('HomeController', ['$scope', '$state', 'UserService',
+/*.controller('HomeController', ['$scope', '$state', 'UserService',
     function($scope, $state, UserService) {
         $scope.setUserType = function(type) {
             UserService.set("userType", type);
@@ -138,12 +140,41 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
             });
         };
     }
+])*/
+
+.controller('HomeController', ['$scope', '$state', 'UserService', 'DataService',
+    function($scope, $state, UserService, DataService) {
+         
+    
+        // if(UserService.get("userStatus")){
+        //     $state.go('seek');
+        // }
+
+        $scope.setUserType = function(type) {
+            UserService.set("userType", type);
+            console.log(UserService.get("userType"));
+
+            if (UserService.get("userType") === 'C') {
+                DataService.geoAPI(function() {
+                    console.log('After geo called inside guestSignIn of HomeController');
+                    $state.go('list');
+                });
+            } else {
+                if (UserService.get("userType") === 'N') {
+                    if(UserService.get("userStatus")){
+                        console.log('hi');
+                        $state.go('seek');
+                    }
+                    else{
+                        console.log('hi');
+                        $state.go('signIn');
+                    }
+                }
+            }
+        };
+    }
 ])
 
-
-/*.controller('ListController', ['$scope', '$http', '$state', '$ionicHistory,'UserService',
-    function($scope, $http, $state,UserService) {
-.goBack()*/
 .controller('ListController', ['$scope', '$http', '$state', 'DataService',
     function($scope, $http, $state, DataService) {
 
@@ -164,12 +195,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                     var latitude = results[0].geometry.location.lat();
                     var longitude = results[0].geometry.location.lng();
                     console.log('lat', latitude, 'long', longitude);
-                    /*DataService.search(latitude,longitude).then(function () {
-                      console.log('get API data called after search');
-                      $scope.ngo = DataService.getApiData();
-              });*/
-
-                    DataService.search(latitude, longitude, function() {
+                    DataService.searchAPI(latitude, longitude, function() {
                         console.log('get API data called after search');
                         $scope.ngo = DataService.getApiData();
                     });
@@ -199,7 +225,10 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 
 
 .controller('putserviceCtrl', ['$scope', '$http', '$state', 'UserService', function($scope, $http, $state, UserService) {
-
+$scope.form = {};
+ $scope.frm = {};
+  $scope.errortext = "";
+       
     if (UserService.get("userStatus")) {
         $scope.cause = null;
         console.log('putserviceCtrl called');
@@ -208,31 +237,48 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         $scope.product = null;
         $scope.quantity = null;
 
-        $scope.putdata = function(cause, category, product, quantity) {
+        $scope.putdata = function(frm) {
+               if (frm.cause != null && frm.category != null && frm.product != null && frm.quantity != null) {
             var data = {
-                cause: cause,
+                cause: frm.cause,
                 requirement: [{
                     reqId: new Date().getTime().toString(),
-                    category: category,
-                    product: product,
-                    quantity: quantity,
+                    category: frm.category,
+                    product: frm.product,
+                    quantity: frm.quantity,
                     status: true
                 }]
             };
+       
 
-            var ngoId = UserService.get("userId");
+            var ngoId = UserService.get("ngoId");
             console.log(UserService.get("userId"));
             console.log("NGOId", ngoId);
 
-            $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("userId")) + '/event', data).then(function(response) {
+            $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("ngoId")) + '/event', data).then(function(response) {
                 if (response.data)
                     $scope.msg = "Put Data Method Executed Successfully!";
+                 $scope.reset();
+                 $scope.reloadPage();
+
             });
 
-            $state.go('seek');
+            $state.go('seek',{reload: true});
+        } else{
+             $scope.errortext = "All Fields are necessary";
+        }
         };
     } else {
         $state.go('home');
+    }
+
+   $scope.reset = function() {
+   $scope.frm = {};
+      $scope.form.signInForm.$setPristine();
+};
+
+    $scope.reloadPage = function(){
+        window.location.reload();
     }
 
 }])
@@ -240,39 +286,40 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 
 .controller('GetController', ['$scope', '$http', '$state', 'UserService', function($scope, $http, $state, UserService) {
 
-    $scope.Update = function(reqId) {
-        console.log(reqId);
-        console.log("userid", UserService.get("userId"));
-        $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("userId")) + '/delete/' + encodeURI(reqId)).then(function(response) {
-            if (response.data)
-                $scope.msg = "Put Data Method Executed Successfully!";
-        });
-    };
+   
     console.log(UserService.get("userSatus"));
     if (UserService.get("userStatus")) {
-        $scope.pageData = {
-            charity: "",
-            event: "",
-            requirement: ""
-        };
-        $http.get('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("userId"))).success(function(data) {
+        console.log(UserService.get("ngoId"));
+        $http.get('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("ngoId"))).success(function(data) {
             console.log(data);
 
             $scope.charity = data;
             $scope.event = data.charityEvent;
-            $scope.requirement = $scope.event.requirement;
 
-            console.log('event', $scope.event);
+            console.log('event', $scope.charity);
         });
     } else {
         $state.go('home');
     }
+
+     $scope.Update = function(reqId) {
+        console.log(reqId);
+        console.log("userid-ngo", UserService.get("ngoId"));
+        $http.put('https://csrsample.herokuapp.com/charity/' + encodeURI(UserService.get("ngoId")) + '/delete/' + encodeURI(reqId)).then(function(response) {
+            if (response.data)
+                $scope.msg = "Put Data Method Executed Successfully!";
+        });
+    };
 }])
 
 
 .controller('WelcomeCtrl', function($scope, $state, $cookieStore, $http, UserService, DataService) {
     $scope.userType = UserService.get("userType");
-
+   
+    if(UserService.get("userStatus")===undefined){
+         UserService.set("userStatus", false);
+        }
+    $scope.userStatus =  UserService.get("userStatus");
     $scope.guestSignin = function() {
 
         if (UserService.get("userType") === 'C') {
@@ -282,7 +329,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
             });
         } else {
             if (UserService.get("userType") === 'N') {
-                $window.alert('Please log in to continue.');
+
                 $state.go('welcome');
             } else {
                 $state.go('welcome');
@@ -290,15 +337,75 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         };
     };
 
-    $scope.Signin = function(userId, password){
-      var data = {
-                userId: userId,
+
+    $scope.Signin = function(emailId, password) {
+        debugger;
+        $scope.errortext = "";
+        if (emailId != null && password != null) {
+            var data = {
+                emailId: emailId,
                 password: password
+
             };
-       $http.post('https://csrsample.herokuapp.com/login', data)
-          
-               $state.go('seek');
-            };
+            console.log("***data from page ****", data);
+
+            $http.post('https://csrsample.herokuapp.com/login', data).success(function(response) {
+                console.log("userid from response", response.userId);
+
+
+                if (response.userId == "N" || response.userId == "W") {
+                    $scope.errortext = "Invalid username or password. Please try again";
+                    $state.go('signIn');
+
+                } else {
+
+                    UserService.set("userId", response.userId);
+                    var ngoId = "csr" +response.userId;
+                     console.log("ngoId", ngoId);
+                    UserService.set("ngoId", ngoId);
+                    UserService.set("userStatus", true);
+                    $scope.userStatus =  UserService.get("userStatus");
+                     $scope.reloadPage();
+                    console.log("User", UserService.get("userId"), "Response", response);
+                    $scope.show_menu = false;
+                    $state.go('seek');
+
+                }
+            })
+        }
+        else{
+        	
+        	$scope.errortext = "Username and Password can't be empty";
+        }
+
+    };
+
+
+
+
+    $scope.user = $cookieStore.get('userInfo');
+   
+    $scope.logout = function() {
+        console.log('In logout');
+        $cookieStore.remove("userInfo");
+        console.log("Hello");
+        console.log('userInfo');
+        UserService.set("userStatus", false);
+        $scope.userStatus =  UserService.get("userStatus");
+        $scope.reloadPage();
+        $state.go('home');
+        UserService.remove("userStatus");
+        UserService.remove("userId");
+        UserService.remove("userType");
+        
+        $window.location.reload();
+
+    };
+
+
+  $scope.reloadPage = function(){
+        window.location.reload();
+    }
 
     $scope.fbLogin = function() {
         FB.login(function(response) {
@@ -351,9 +458,6 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                                         console.log('geo called when existing user try to login');
                                         $state.go('list');
                                     });
-
-
-
                                 } else if (UserService.get("userType") == 'N') {
                                     $state.go('seek');
                                 }
@@ -378,6 +482,11 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 
     // Google Plus Login
     $scope.gplusLogin = function() {
+
+
+
+        gapi.client.setApiKey(null);
+        gapi.client.load('plus', 'v1', function() {});
         var myParams = {
             // Replace client id with yours
             'clientid': '374010870485-pq83isui0ccj4t1ts0elb8eo200ond3k.apps.googleusercontent.com',
@@ -386,6 +495,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
             'approvalprompt': 'force',
             'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
         };
+
         gapi.auth.signIn(myParams);
 
         function loginCallback(result) {
@@ -403,21 +513,12 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                             }
                         }
                     }
-
-
-                    // store data to DB
                     var user = {};
                     user.userName = resp.displayName;
-                    /*user.email = userEmail;*/
-                    /*user.email = resp.emails;*/
                     user.userId = resp.id;
                     UserService.set("userId", resp.id);
-                    //$rootScope.userId = resp.id;
                     UserService.set("userStatus", true);
                     console.log("User", UserService.get("userId"), "Response", resp, "User", user);
-                    // $rootScope.userStatus = 'A';
-
-
 
                     $http.get('https://csrsample.herokuapp.com/users').success(function(data) {
                         if (!data) {
@@ -465,16 +566,6 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
                         }
 
                     });
-
-
-                    /*$http.post('http://10.202.249.51:8080/users', user).then(function (response) {
-                      if (response.data)
-                       $scope.msg = "Api Call successfull";
-                        console.log('Success');
-       });
-                       
-                    /*user.profilePic = resp.image.url;*/
-
                 });
             }
         }
@@ -488,23 +579,6 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 
 .controller('dashboardCtrl', function($scope, $window, $state, $cookieStore, UserService, DataService) {
 
-    $scope.user = $cookieStore.get('userInfo');
-
-    $scope.logout = function() {
-        console.log('In logout');
-        $cookieStore.remove("userInfo");
-        console.log("Hello");
-        console.log('userInfo');
-        UserService.set("userStatus", false);
-        $state.go('welcome');
-        UserService.remove("userStatus");
-        UserService.remove("userId");
-        UserService.remove("userType");
-
-
-        $window.location.reload();
-
-    };
 
     $scope.submit = function() {
         console.log('In submit');
@@ -517,7 +591,7 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
             if (UserService.get("userType") == 'N') {
                 $state.go('seek');
             } else {
-                $state.go('welcome');
+                $state.go('home');
             }
         }
         $window.location.reload();
@@ -528,97 +602,11 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
 .service('DataService', function($http, $cordovaGeolocation, $ionicLoading, $ionicPlatform) {
 
     var that = this;
-
-    function sortByKey(array, key) {
-        return array.sort(function(a, b) {
-            var x = a[key];
-            var y = b[key];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        });
-    }
-
-    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-        var R = 6371; // Radius of the earth in km
-        var dLat = deg2rad(lat2 - lat1); // deg2rad below
-        var dLon = deg2rad(lon2 - lon1);
-        var a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var d = R * c; // Distance in km
-        return d;
-    }
-
-    function deg2rad(deg) {
-        return deg * (Math.PI / 180)
-    }
-
     this.apiData = [];
 
     this.getApiData = function() {
         console.log('getApiData', this.apiData);
         return this.apiData;
-    };
-
-    this.geo = function(cb) {
-        console.log('in geo');
-        $ionicPlatform.ready(function() {
-
-            $ionicLoading.show({
-                template: '<ion-spinner icon="bubbles"></ion-spinner><br/>Acquiring location!'
-            });
-
-            var posOptions = {
-                enableHighAccuracy: true,
-                timeout: 20000,
-                maximumAge: 0
-            };
-
-            $cordovaGeolocation.getCurrentPosition(posOptions).then(function(position) {
-                var lat = position.coords.latitude,
-                    long = position.coords.longitude,
-                    myLatlng = new google.maps.LatLng(lat, long),
-                    mapOptions = {
-                        center: myLatlng,
-                        zoom: 16,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                console.log('before map');
-                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                console.log('map', map);
-                //$scope.map = map;   
-                $ionicLoading.hide();
-                console.log('lat1', lat, 'long1', long);
-                var lat1 = lat;
-                var long1 = long;
-
-                $http.get('https://csrsample.herokuapp.com/charity').success(function(data) {
-                    console.log('api called');
-                    var ngoData = data;
-
-                    angular.forEach(ngoData, function(obj, index) {
-                        console.log(lat, long, obj.latitude, obj.longitude);
-
-                        var distance = getDistanceFromLatLonInKm(lat, long, obj.latitude, obj.longitude);
-
-                        obj["distance"] = distance;
-                    });
-
-                    console.log('ngoData from GEO', ngoData);
-
-                    that.apiData = ngoData;
-
-                    if (cb) {
-                        cb();
-                    }
-
-                });
-            }, function(err) {
-                $ionicLoading.hide();
-                console.log(err);
-            });
-        })
     };
 
     this.geoAPI = function(cb) {
@@ -669,35 +657,16 @@ angular.module('starter', ['ngCookies', 'ionic', 'ngCordova'])
         })
     };
 
-    this.search = function(lat, long, cb) {
-        console.log('in search');
-        var ngoData = that.apiData;
-        console.log('ngoData initialised', ngoData);
-
-        angular.forEach(ngoData, function(obj, index) {
-            console.log(lat, long, obj.latitude, obj.longitude);
-
-            var distance = getDistanceFromLatLonInKm(lat, long, obj.latitude, obj.longitude);
-
-            obj["distance"] = distance;
-        });
-
-        console.log('ngoData from search', ngoData);
-
-        that.apiData = ngoData;
-        if (cb) {
-            cb();
-        }
-    };
-
     this.searchAPI = function(lat, long, cb) {
         console.log('in search');
+
+
         $http.get('https://csrsample.herokuapp.com/calculateDistance/' + encodeURI(lat) + '/' + encodeURI(long)).success(function(data) {
             console.log('api called');
-            that.apiData = ngoData;
+            that.apiData = data;
             console.log('api data inside searchAPI', that.apiData);
         });
-        
+
         if (cb) {
             cb();
         }
