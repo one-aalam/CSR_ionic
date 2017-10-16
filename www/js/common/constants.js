@@ -1,0 +1,10 @@
+angular.module('myAppConstants', [])
+	.constant('CSR_API_URI', 'https://csrsample.herokuapp.com')
+	.constant('CHECKPOINT_LOGIN', '/login')
+	.constant('CHECKPOINT_USER', '/user')
+	.constant('CHECKPOINT_ENDPOINT', '/calculateDistance/')
+	.constant('CHARITY_ENDPOINT', '/charity/')
+	.constant('EVENT', '/event/')
+	.constant('DELETE', '/delete/')
+	.constant('APP_VERSION', '0.1')
+	.constant('APP_NAME', 'CSR APPLICATION');

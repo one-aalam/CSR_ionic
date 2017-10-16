@@ -1,5 +1,4 @@
-app.service("UserService", function () {
-
+angular.module('myAppUserServiceModule', []).service("UserService", function () {
     this.get = function (key) {
         return window.localStorage.getItem(key);
     };
