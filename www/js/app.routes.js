@@ -5,13 +5,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('list', {
             url: '/list',
             templateUrl: 'templates/list.html',
-            controller: 'ListController'
+            controller: 'CharityListController'
         })
 
         .state('detail', {
             url: '/list/:ngoId',
             templateUrl: 'templates/detail.html',
-            controller: 'DetailController'
+            controller: 'DetailNgoController'
         })
 
         .state('seek', {
@@ -22,13 +22,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('raiseRequest', {
             url: '/raiseRequest',
             templateUrl: 'templates/raiseRequest.html',
-            controller: 'PutController',
+            controller: 'charityRaiseReqCtrl',
         })
 
         .state('updateRequest', {
             url: '/updateRequest',
             templateUrl: 'templates/updateRequest.html',
-            controller: 'GetController'
+            controller: 'charityDetailCtrl'
         })
 
         .state('home', {
@@ -40,14 +40,14 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('welcome', {
             url: "/welcome",
             templateUrl: "templates/welcome.html",
-            controller: 'WelcomeCtrl',
+            controller: 'UserSignInCtrl',
             cache: false
         })
 
         .state('signIn', {
             url: "/signIn",
             templateUrl: "templates/SignIn.html",
-            controller: 'WelcomeCtrl',
+            controller: 'UserSignInCtrl',
             cache: false
         })
         .state('dashboard', {

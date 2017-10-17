@@ -12,9 +12,7 @@ angular.module('myAppBaseServiceModule', ['myAppConstants']).service("BaseServic
             URL = endpoint + encodedURI;
         }
          $http.get(baseURL + URL).success(function (response) {
-                console.log('api call successful');
                 that.response = response;
-                console.log("this is response"+response);
             });
         return that.response;
     };
@@ -22,9 +20,7 @@ angular.module('myAppBaseServiceModule', ['myAppConstants']).service("BaseServic
     // Generic HTTP PUT call for all services
     this.putData = function (endpoint, encodedURI, subEndPoint, data) {
         $http.put(baseURL + endpoint + encodedURI + subEndPoint, data).then(function (response) {
-            console.log('api call successful');
             that.response = response;
-            console.log(response);
         });
         return that.response;
     };
@@ -39,9 +35,7 @@ angular.module('myAppBaseServiceModule', ['myAppConstants']).service("BaseServic
             URL = endpoint + encodedURI + subEndPoint;
         }
         $http.post(baseURL + endpoint + encodedURI + subEndPoint, data).then(function (response) {
-            console.log('api call successful');
             that.response = response;
-            console.log(response);
         });
         return that.response;
     };

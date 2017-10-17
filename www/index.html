@@ -34,13 +34,13 @@
     <script src="js/common/constants.js"></script>
     
     <!--loading controllers-->
-    <script src="js/controllers/core_controllers/home.controller.js"></script>
-    <script src="js/controllers/core_controllers/welcome.controller.js"></script>
-    <script src="js/controllers/core_controllers/dashboard.controller.js"></script>
-    <script src="js/controllers/core_controllers/detail.controller.js"></script>
-    <script src="js/controllers/dao_controllers/list.controller.js"></script>
-    <script src="js/controllers/dao_controllers/put.controller.js"></script>
-    <script src="js/controllers/dao_controllers/get.controller.js"></script>
+    <script src="js/controllers/core_controllers/CharityHomeCtrl.js"></script>
+    <script src="js/controllers/core_controllers/UserSignInCtrl.js"></script>
+    <script src="js/controllers/core_controllers/CharityDashboardCtrl.js"></script>
+    <script src="js/controllers/core_controllers/CharityNgoDetailCtrl.js"></script>
+    <script src="js/controllers/dao_controllers/CharityListCtrl.js"></script>
+    <script src="js/controllers/dao_controllers/CharityRaiseReqCtrl.js"></script>
+    <script src="js/controllers/dao_controllers/CharityDetailCtrl.js"></script>
 
     <!--loading services-->
     <script src="js/services/base.service.js"></script>
@@ -63,7 +63,7 @@
             <a href="#/home"><button class="button button-calm icon ion-home" button-large></button></a>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
-            <ion-icon class="button button-calm" name="logout" ng-controller="WelcomeCtrl" ng-show={{userStatus}} ng-click="logout()">Logout</ion-icon>
+            <ion-icon class="button button-calm" name="logout" ng-controller="UserSignInCtrl" ng-show={{userStatus}} ng-click="logout()">Logout</ion-icon>
         </ion-nav-buttons>
     </ion-nav-bar>
 
