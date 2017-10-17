@@ -7,18 +7,15 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: 'templates/list.html',
             controller: 'CharityListController'
         })
-
         .state('detail', {
             url: '/list/:ngoId',
             templateUrl: 'templates/detail.html',
             controller: 'DetailNgoController'
         })
-
         .state('seek', {
             url: '/seek',
             templateUrl: 'templates/seek.html'
         })
-
         .state('raiseRequest', {
             url: '/raiseRequest',
             templateUrl: 'templates/raiseRequest.html',
@@ -44,7 +41,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             cache: false
         })
 
-        .state('signIn', {
+        .state('SignIn', {
             url: "/signIn",
             templateUrl: "templates/SignIn.html",
             controller: 'UserSignInCtrl',

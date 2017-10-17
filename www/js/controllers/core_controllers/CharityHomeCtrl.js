@@ -12,7 +12,7 @@ angular.module('myAppCoreModule3', []).controller('HomeController', ['$scope', '
                         $state.go('seek');
                     }
                     else {
-                        $state.go('signIn');
+                        $state.go('SignIn');
                     }
                 }
             }
